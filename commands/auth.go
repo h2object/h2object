@@ -33,7 +33,11 @@ func readInput(in io.Reader, out io.Writer) string {
 
 func authNewCommand(ctx *cli.Context) {
 	workdir := ctx.GlobalString("workdir")
-	stdin, stdout, stderr := term.StdStreams()
+	// stdin, stdout, stderr := term.StdStreams()
+
+	stdin := os.Stdin
+	stdout := os.Stdout
+	stderr := os.Stderr
 
 	config, err := LoadConfigFile(workdir)
 	if  err == nil {
@@ -101,8 +105,11 @@ func authLoginCommand(ctx *cli.Context) {
 		return
 	}
 
-	stdin, stdout, stderr := term.StdStreams()
-	
+	// stdin, stdout, stderr := term.StdStreams()
+	stdin := os.Stdin
+	stdout := os.Stdout
+	stderr := os.Stderr
+
 	config, err := LoadConfigFile(directory)
 	if err != nil {
 		fmt.Fprintln(stderr, err.Error())
@@ -190,8 +197,11 @@ func authLogoutCommand(ctx *cli.Context) {
 		fmt.Println("workdir:", err)
 		return
 	}
-	_, stdout, stderr := term.StdStreams()
-	
+	// _, stdout, stderr := term.StdStreams()
+	// stdin := os.Stdin
+	stdout := os.Stdout
+	stderr := os.Stderr
+
 	config, err := LoadConfigFile(directory)
 	if err != nil {
 		fmt.Fprintln(stderr, err.Error())
@@ -221,8 +231,11 @@ func authStatusCommand(ctx *cli.Context) {
 		fmt.Println("workdir:", err)
 		return
 	}
-	_, stdout, stderr := term.StdStreams()
-	
+	// _, stdout, stderr := term.StdStreams()
+	// stdin := os.Stdin
+	stdout := os.Stdout
+	stderr := os.Stderr
+
 	config, err := LoadConfigFile(directory)
 	if err != nil {
 		fmt.Fprintln(stderr, err.Error())

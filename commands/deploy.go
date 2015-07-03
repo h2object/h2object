@@ -8,7 +8,6 @@ import (
 	"os"
 	"io/ioutil"
 	"strings"
-	"github.com/docker/docker/pkg/term"
 	"github.com/h2object/pb"
 	"github.com/h2object/content-type"
 	"github.com/h2object/h2object/app"
@@ -106,7 +105,7 @@ func deployPullCommand(ctx *cli.Context) {
 		return
 	}
 
-	_, _, stderr := term.StdStreams()
+	stderr := os.Stderr
 	
 	h2oconf, err := app.LoadCONFIG(path.Join(directory, "h2object.conf"))
 	if err != nil {

@@ -2,7 +2,6 @@ package commands
 
 import (
 	"os"
-	// "io"
 	"strings"
 	"errors"
 	"fmt"
@@ -10,7 +9,6 @@ import (
 	"path/filepath"
 	"text/tabwriter"
 	"github.com/codegangsta/cli"
-	"github.com/docker/docker/pkg/term"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/h2object/pb"
 	"github.com/h2object/h2object/app"
@@ -58,7 +56,8 @@ func status_print(stat int64) string {
 
 func themeSearchCommand(ctx *cli.Context) {
 	workdir := ctx.GlobalString("workdir")
-	_, stdout, stderr := term.StdStreams()
+	stdout := os.Stdout
+	stderr := os.Stderr
 
 	host := ctx.String("Host")
 	port := ctx.Int("Port")
@@ -118,7 +117,8 @@ func themePushCommand(ctx *cli.Context) {
 		return
 	}
 
-	_, stdout, stderr := term.StdStreams()
+	stdout := os.Stdout
+	stderr := os.Stderr
 	
 	// auth check
 	config, err := LoadConfigFile(directory)
@@ -210,7 +210,8 @@ func themePullCommand(ctx *cli.Context) {
 		fmt.Println("workdir:", err)
 		return
 	}
-	_, _, stderr := term.StdStreams()
+	stderr := os.Stderr
+
 	
 	if len(ctx.Args()) != 1 {
 		fmt.Fprintln(stderr, "please input theme id with format: provider/name:version")
