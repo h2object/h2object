@@ -5,9 +5,9 @@ import (
 	"time"
 	"strings"
 	sysio "io"
-	"github.com/qiniu/api/conf"
-	"github.com/qiniu/api/rs"
-	"github.com/qiniu/api/io"
+	"github.com/qiniu/api.v6/conf"
+	"github.com/qiniu/api.v6/rs"
+	"github.com/qiniu/api.v6/io"
 	"github.com/h2object/h2object/object"
 )
 
