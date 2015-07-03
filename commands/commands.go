@@ -4,9 +4,9 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-const version = "0.1.0"
-const author = "support"
-const support = "support@h2object.io"
+const version = "1.0.0"
+const author = ""
+const support = "liujianping@h2object.io"
 
 func App() *cli.App {
 	app := cli.NewApp()
@@ -23,21 +23,21 @@ func App() *cli.App {
 		cli.StringFlag{
 			Name: "host, l",
 			Value: "127.0.0.1",
-			Usage: "h2object http server host",
+			Usage: "local server host",
 		},
 		cli.IntFlag{
 			Name: "port, p",
 			Value: 9000,
-			Usage: "h2object http server port",
+			Usage: "local server port",
 		},
 		cli.StringFlag{
 			Name: "workdir, w",
 			Value: "",
-			Usage: "h2object working directory",
+			Usage: "local working directory",
 		},
 		cli.BoolFlag{
 			Name: "daemon, d",
-			Usage: "run at daemon mode",
+			Usage: "run @ daemon mode",
 		},
 	}
 
@@ -45,21 +45,21 @@ func App() *cli.App {
 	app.Commands = []cli.Command{
 		{
 			Name:  "auth",
-			Usage: "auth commands default @ h2object.io",
+			Usage: "auth commands @ h2object.io",
 			Subcommands: []cli.Command{
 				{
 					Name:  "new",
-					Usage: "auth account sign up.",
+					Usage: "sign up @ remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object auth server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object auth server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -68,17 +68,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "login",
-					Usage: "auth login with username & password",
+					Usage: "sign in @ remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object auth server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object auth server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -87,17 +87,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "status",
-					Usage: "auth status",
+					Usage: "sign info @ remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object auth server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object auth server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -106,17 +106,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "logout",
-					Usage: "auth logout",
+					Usage: "sign off @ remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object auth server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object auth server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -131,21 +131,21 @@ func App() *cli.App {
 			Subcommands: []cli.Command{
 				{
 					Name:  "start",
-					Usage: "start http server",
+					Usage: "local server start",
 					Action: func(ctx *cli.Context) {
 						httpStartCommand(ctx)	
 					},
 				},
 				{
 					Name:  "reload",
-					Usage: "reload http server",
+					Usage: "local server reload",
 					Action: func(ctx *cli.Context) {
 						httpReloadCommand(ctx)	
 					},
 				},
 				{
 					Name:  "stop",
-					Usage: "stop http server",
+					Usage: "local server stop",
 					Action: func(ctx *cli.Context) {
 						httpStopCommand(ctx)	
 					},
@@ -154,21 +154,21 @@ func App() *cli.App {
 		},
 		{
 			Name:  "deploy",
-			Usage: "deploy commands @ local",
+			Usage: "deploy commands @ local <=> remote",
 			Subcommands: []cli.Command{
 				{
 					Name:  "push",
-					Usage: "push local application to remote http server",
+					Usage: "deploy @ local => remote ",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "",
-							Usage: "h2object push remote host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object push remote port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -177,17 +177,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "pull",
-					Usage: "pull remote application to the local http server",
+					Usage: "deploy @ local <= remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "",
-							Usage: "h2object pull remote host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object pull remote port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -198,36 +198,36 @@ func App() *cli.App {
 		},
 		{
 			Name:  "theme",
-			Usage: "theme commands default @ h2object.io",
+			Usage: "theme commands @ h2object.io",
 			Subcommands: []cli.Command{
 				{
 					Name:  "search",
-					Usage: "search themes with keyword from theme server",
+					Usage: "search themes @ remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object theme server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object theme server port",
+							Usage: "remote server port",
 						},
 						cli.IntFlag{
 							Name: "page, p",
 							Value: 0,
-							Usage: "theme search page number",
+							Usage: "search page number",
 						},
 						cli.IntFlag{
 							Name: "size, s",
-							Value: 0,
-							Usage: "theme search page size",
+							Value: 50,
+							Usage: "search page size",
 						},
 						cli.IntFlag{
 							Name: "catagory, c",
 							Value: 0,
-							Usage: "theme search catagory",
+							Usage: "search catagory",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -236,17 +236,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "pull",
-					Usage: "pull dest theme from theme server",
+					Usage: "pull a theme @ local <= remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object theme server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object theme server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
@@ -255,17 +255,17 @@ func App() *cli.App {
 				},
 				{
 					Name:  "push",
-					Usage: "push current theme to theme server",
+					Usage: "push current theme @ local => remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
 							Value: "api.h2object.io",
-							Usage: "h2object theme server host",
+							Usage: "remote server host",
 						},
 						cli.IntFlag{
 							Name: "Port, P",
 							Value: 80,
-							Usage: "h2object theme server port",
+							Usage: "remote server port",
 						},
 					},
 					Action: func(ctx *cli.Context) {
