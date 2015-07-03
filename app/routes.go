@@ -6,6 +6,7 @@ import (
 
 func routes_filter(ctx *context, c *ext.Controller, filters []filter) {
 	if c.Request.URI() == "/stats" {
+		ctx.Info("request (%s) (%s) done by routes", c.Request.MethodToLower(), c.Request.URI())
 		c.Json(ctx.app.statistics.Data())
 		return
 	}

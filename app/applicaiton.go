@@ -18,8 +18,8 @@ type Application struct{
 	log.Logger
 
 	// option & config
-	options		 *Options
-	configs		 *CONFIG
+	Options		 *Options
+	Configs		 *CONFIG
 
 	// http
 	httpAddr 	 *net.TCPAddr
@@ -53,14 +53,14 @@ type Application struct{
 func NewApplication(options *Options, configs *CONFIG, logger log.Logger) *Application {
 	return &Application{
 		Logger: logger,
-		options: options,
-		configs: configs,
+		Options: options,
+		Configs: configs,
 		exitc: make(chan int),
 	}
 }
 
 func (app *Application) Init() error {
-	httpAddr, err := net.ResolveTCPAddr("tcp", app.options.HTTPAddress)
+	httpAddr, err := net.ResolveTCPAddr("tcp", app.Options.HTTPAddress)
 	if err != nil {
 		return err
 	}
@@ -72,15 +72,15 @@ func (app *Application) Init() error {
 	}
 	app.httpListener = httpListener
 	
-	app.configs.SetSection("h2object")
+	app.Configs.SetSection("h2object")
 
-	cache_expire := app.configs.StringDefault("cache.expire","10m")
+	cache_expire := app.Configs.StringDefault("cache.expire","10m")
 	duration_expire, err := time.ParseDuration(cache_expire)
 	if err != nil {
 		return err
 	}
 
-	cache_flush := app.configs.StringDefault("cache.flush", "10s")
+	cache_flush := app.Configs.StringDefault("cache.flush", "10s")
 	duration_flush, err := time.ParseDuration(cache_flush)
 	if err != nil {
 		return err
@@ -89,30 +89,30 @@ func (app *Application) Init() error {
 	app.cache = object.NewMutexCache(duration_expire, duration_flush)
 
 	// index init
-	app.pageIndexes = object.NewBleveIndexes(app.options.IndexesRoot, "pages.idx")
-	app.objectIndexes = object.NewBleveIndexes(app.options.IndexesRoot, "objects.idx")
+	app.pageIndexes = object.NewBleveIndexes(app.Options.IndexesRoot, "pages.idx")
+	app.objectIndexes = object.NewBleveIndexes(app.Options.IndexesRoot, "objects.idx")
 
 	// store init
-	systems := object.NewBoltStore(app.options.StorageRoot, "systems.dat", object.BoltCoder{})
+	systems := object.NewBoltStore(app.Options.StorageRoot, "systems.dat", object.BoltCoder{})
 	if err := systems.Load(); err != nil {
 		return err
 	}
 	app.systems = systems
 
-	objects := object.NewBoltStore(app.options.StorageRoot, "objects.dat", object.BoltCoder{})
+	objects := object.NewBoltStore(app.Options.StorageRoot, "objects.dat", object.BoltCoder{})
 	if err := objects.Load(); err != nil {
 		return err
 	}
 	app.objects = objects
 
-	pages := object.NewBoltStore(app.options.StorageRoot, "pages.dat", object.BoltCoder{})
+	pages := object.NewBoltStore(app.Options.StorageRoot, "pages.dat", object.BoltCoder{})
 	if err := pages.Load(); err != nil {
 		return err
 	}
 	app.pages = pages
 	// template
-	paths := []string{app.options.TemplateRoot}
-	delimiters := app.configs.StringDefault("template.delimiters","{{ }}")
+	paths := []string{app.Options.TemplateRoot}
+	delimiters := app.Configs.StringDefault("template.delimiters","{{ }}")
 	app.templates = template.NewTemplateLoader(delimiters, paths, app.Logger)
 
 	// template load
@@ -121,19 +121,19 @@ func (app *Application) Init() error {
 	}
 
 	// context set
-	index := app.configs.StringDefault("index", "")
-	appid := app.configs.StringDefault("appid", "")
-	secret := app.configs.StringDefault("secret", "")
-	duration := app.configs.DurationDefault("markdown.cache", 10 * time.Minute)
+	index := app.Configs.StringDefault("index", "")
+	appid := app.Configs.StringDefault("appid", "")
+	secret := app.Configs.StringDefault("secret", "")
+	duration := app.Configs.DurationDefault("markdown.cache", 10 * time.Minute)
 
 	ctx := new_context(app)
 	ctx.index = index
 
 	ctx.signature = util.SignString(secret, appid)
-	ctx.markdowns = app.configs.MultiStringDefault("markdown.suffix", ",", []string{"md", "markdown"})
-	ctx.templates = app.configs.MultiStringDefault("template.suffix", ",", []string{"html", "htm", "tpl"})
+	ctx.markdowns = app.Configs.MultiStringDefault("markdown.suffix", ",", []string{"md", "markdown"})
+	ctx.templates = app.Configs.MultiStringDefault("template.suffix", ",", []string{"html", "htm", "tpl"})
 	ctx.cache_duration = duration
-	ctx.devmode = app.configs.BoolDefault("develope.mode", false)
+	ctx.devmode = app.Configs.BoolDefault("develope.mode", false)
 	if err := ctx.init(); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (app *Application) Init() error {
 	}
 	
 	// stats
-	stats_enable := app.configs.BoolDefault("stats.enable", true)
+	stats_enable := app.Configs.BoolDefault("stats.enable", true)
 	if stats_enable {
 		app.statistics = stats.New()
 		app.service = app.statistics.Handler(serv)
@@ -165,7 +165,7 @@ func (app *Application) Main() {
 	})
 
 	app.background.Work(func() { 
-		c := time.Tick(app.options.RefreshInterval)
+		c := time.Tick(app.Options.RefreshInterval)
 		for {
 			select {
 			case <- c:

@@ -12,6 +12,7 @@ var handlers map[string]handler
 func suffix_filter(ctx *context, c *ext.Controller, filters []filter) {
 	if do, ok := handlers[strings.ToLower(c.Request.Suffix())]; ok {
 		if done := do(ctx, c); done {
+			ctx.Info("request (%s) (%s) done by suffix", c.Request.MethodToLower(), c.Request.URI())
 			return
 		}
 	}

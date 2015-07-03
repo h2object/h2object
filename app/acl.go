@@ -9,6 +9,7 @@ import (
 
 func acl_filter(ctx *context, c *ext.Controller, filters []filter) {
 	if done := do_authentic(ctx, c); done {
+		ctx.Info("request (%s) (%s) done by acl", c.Request.MethodToLower(), c.Request.URI())
 		return
 	}
 
@@ -38,12 +39,10 @@ func do_authentic(ctx *context, ctrl *ext.Controller) bool {
 	token := r.Param("token")
 	if token == "" {
 		authorization := r.Header.Get("Authorization")
-		ctx.Trace("authorization (%s) ", authorization)
 		if strings.HasPrefix(authorization, "H2OBJECT ") {
 			token = authorization[len("H2OBJECT "):]
 		}
 	}
-	ctx.Trace("sig (%s) token: (%s)", ctx.signature, token)
 	if required {
 
 		if token != ctx.signature {

@@ -8,10 +8,7 @@ import (
 	"path/filepath"
 	"fmt"
 	"os"
-	"os/signal"
-	"syscall"
 	"time"
-	"github.com/h2object/go-daemon"
 	"github.com/h2object/h2object/app"
 	"github.com/h2object/h2object/log"
 )
@@ -27,8 +24,8 @@ func httpStartCommand(ctx *cli.Context) {
 		fmt.Println("unknown working directory, please use -w to provide.")
 		os.Exit(1)
 	}
-	// verbose
-	verbose := ctx.GlobalBool("verbose")
+	// daemon 
+	daemon := ctx.GlobalBool("daemon")
 	
 	// options
 	options := app.NewOptions(ctx.GlobalString("host"),ctx.GlobalInt("port"))
@@ -52,7 +49,7 @@ func httpStartCommand(ctx *cli.Context) {
 	
 	logger := log.NewH2OLogger()
 	defer logger.Close()
-	logger.SetConsole(verbose)
+	logger.SetConsole(true)
 	
 	configs.SetSection("logs")
 	fenable := configs.BoolDefault("file.enable", false)
@@ -69,86 +66,11 @@ func httpStartCommand(ctx *cli.Context) {
 	application := app.NewApplication(options, configs, logger)
 
 	if err := application.Init(); err != nil {
-		fmt.Println("h2object init failed:", err)
+		fmt.Println("[h2object] init failed:", err)
 		os.Exit(1)
 	}
 
-	if verbose {
-		pid, err := pidfile.New(path.Join(options.Root, "h2object.pid"))
-		if err != nil {
-			fmt.Println("h2object http start failed:", err.Error())
-			os.Exit(1)
-		}
-		defer pid.Kill()
-
-		exitChan := make(chan int)
-		signalChan := make(chan os.Signal, 1)
-		go func() {
-			for {
-				sig := <-signalChan
-				switch sig {
-				case syscall.SIGHUP:
-					application.Refresh()
-					continue
-				default:
-					exitChan <- 1
-					break
-				}	
-			}			
-		}()
-		signal.Notify(signalChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
-		application.Main()
-
-		<-exitChan
-		application.Exit()		
-	} else { // daemon mode
-		termHandler := func(sig os.Signal) error {
-			application.Exit()
-			return nil
-		}
-		reloadHandler := func(sig os.Signal) error {
-			application.Refresh()
-			return nil
-		}
-		daemon.AddCommand(nil, syscall.SIGQUIT, termHandler)
-		daemon.AddCommand(nil, syscall.SIGTERM, termHandler)
-		daemon.AddCommand(nil, syscall.SIGHUP, reloadHandler)
-		
-		cntxt := &daemon.Context{
-			PidFileName: "",
-			PidFilePerm: 0644,
-			LogFileName: "",
-			LogFilePerm: 0640,
-			WorkDir:     "",
-			Umask:       027,
-			Args:        []string{},
-		}
-		d, err := cntxt.Reborn()
-		if err != nil {
-			fmt.Println("Reborn ", err)
-			os.Exit(1)
-		}
-		if d != nil {
-			os.Exit(1)
-		}
-		defer cntxt.Release()
-		
-		pid, err := pidfile.New(path.Join(options.Root, "h2object.pid"))
-		if err != nil {
-			fmt.Println("h2object http start failed:", err.Error())
-			os.Exit(1)
-		}
-		defer pid.Kill()
-
-		application.Main()
-		fmt.Println("[h2object] start", success)
-
-		err = daemon.ServeSignals()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	}	
+	start(application, daemon)	
 }
 
 func httpStopCommand(ctx *cli.Context) {

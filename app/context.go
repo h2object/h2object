@@ -79,7 +79,7 @@ func (ctx *context) get_page(uri string) *page.Page {
 		}	
 	}
 
-	if err := pg.Load(path.Join(ctx.app.options.MarkdownRoot, uri)); err == nil {
+	if err := pg.Load(path.Join(ctx.app.Options.MarkdownRoot, uri)); err == nil {
 		defer ctx.app.cache.Set(uri, pg, ctx.cache_duration)
 		defer ctx.put_page(uri, pg)
 		return pg
@@ -141,5 +141,5 @@ func (ctx *context) folder_pages(root, folder string, suffixes []string) error {
 }
 
 func (ctx *context) init_pages() error {
-	return ctx.folder_pages("/", ctx.app.options.MarkdownRoot, ctx.markdowns)
+	return ctx.folder_pages("/", ctx.app.Options.MarkdownRoot, ctx.markdowns)
 }

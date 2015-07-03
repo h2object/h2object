@@ -177,8 +177,7 @@ func (pages *Pages) retrieve() error {
 		pages.total = total
 	} else {
 		datas := []interface{}{}
-		markdown_suffixs := pages.ctx.app.configs.MultiStringDefault("markdown.suffix", ",", []string{"md", "markdown"})
-		for _, sfx := range markdown_suffixs {
+		for _, sfx := range pages.ctx.markdowns {
 			vals, err := pages.ctx.app.pages.MultiGet(pages.uri, "." + sfx, pages.nested)
 			if err != nil {
 				return err

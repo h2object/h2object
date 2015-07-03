@@ -36,8 +36,8 @@ func App() *cli.App {
 			Usage: "h2object working directory",
 		},
 		cli.BoolFlag{
-			Name: "verbose",
-			Usage: "h2object verbose log info",
+			Name: "daemon, d",
+			Usage: "run at daemon mode",
 		},
 	}
 

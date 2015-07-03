@@ -20,5 +20,5 @@ func nil_filter(ctx *context, c *ext.Controller, filterChain []filter) {}
 
 func nofound_filter(ctx *context, c *ext.Controller, filterChain []filter) {
 	ctx.Info("request (%s) (%s) not found", c.Request.MethodToLower(), c.Request.URI())
-	c.JsonError(http.StatusNotFound, errors.New("Not Found"))
+	c.JsonError(http.StatusNotFound, errors.New("not found"))
 }

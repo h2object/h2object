@@ -14,6 +14,7 @@ import (
 
 func static_filter(ctx *context, c *ext.Controller, filters []filter) {
 	if done := do_static(ctx, c); done {
+		ctx.Info("request (%s) (%s) done by static", c.Request.MethodToLower(), c.Request.URI())
 		return
 	}
 	filters[0](ctx, c, filters[1:])
@@ -32,15 +33,14 @@ func do_static(ctx *context, ctrl *ext.Controller) bool {
 
 func do_static_get(ctx *context, ctrl *ext.Controller) bool {	
 	r := ctrl.Request
-	ctx.Info("static get (%s)", r.URI())
-
-	if !util.Exist(path.Join(ctx.app.options.StaticRoot, r.URI())) {
+	
+	if !util.Exist(path.Join(ctx.app.Options.StaticRoot, r.URI())) {
 		return false
 	}
 
-	ctx.app.configs.SetSection("third")
-	qiniu_enable := ctx.app.configs.BoolDefault("qiniu.enable", false)
-	qiniu_domain := ctx.app.configs.StringDefault("qiniu.domain", "")
+	ctx.app.Configs.SetSection("third")
+	qiniu_enable := ctx.app.Configs.BoolDefault("qiniu.enable", false)
+	qiniu_domain := ctx.app.Configs.StringDefault("qiniu.domain", "")
 
 	if qiniu_enable {
 		if val, err := ctx.app.systems.Get(path.Join("/qiniu", r.URI()), true); err == nil {
@@ -52,31 +52,30 @@ func do_static_get(ctx *context, ctrl *ext.Controller) bool {
 			}
 		}
 	}
-	ctrl.File(path.Join(ctx.app.options.StaticRoot, r.URI()))
+	ctrl.File(path.Join(ctx.app.Options.StaticRoot, r.URI()))
 	return true
 }
 
 func do_static_put(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
-	ctx.Info("static put (%s)", r.URI())
-
+	
 	dir, file := path.Split(r.URI())
 
 	// create static path if not exist
-	realDir := path.Join(ctx.app.options.StaticRoot, dir)
+	realDir := path.Join(ctx.app.Options.StaticRoot, dir)
 	if err := os.MkdirAll(realDir, os.ModePerm); err != nil {
 		ctrl.JsonError(http.StatusInternalServerError, err)
 		return true
 	}
-	fn := path.Join(ctx.app.options.StaticRoot, r.URI())
-	
-	ctx.app.configs.SetSection("third")
-	qiniu_enable := ctx.app.configs.BoolDefault("qiniu.enable", false)
+	fn := path.Join(ctx.app.Options.StaticRoot, r.URI())
+
+	ctx.app.Configs.SetSection("third")
+	qiniu_enable := ctx.app.Configs.BoolDefault("qiniu.enable", false)
 	if qiniu_enable {
 		
-		qiniu_appid := ctx.app.configs.StringDefault("qiniu.appid", "")
-		qiniu_secret := ctx.app.configs.StringDefault("qiniu.secret", "")
-		qiniu_bucket := ctx.app.configs.StringDefault("qiniu.bucket", "")	
+		qiniu_appid := ctx.app.Configs.StringDefault("qiniu.appid", "")
+		qiniu_secret := ctx.app.Configs.StringDefault("qiniu.secret", "")
+		qiniu_bucket := ctx.app.Configs.StringDefault("qiniu.bucket", "")	
 		
 		defer func(key string, file string) {
 		

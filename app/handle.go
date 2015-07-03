@@ -26,7 +26,7 @@ func do_markdown(ctx *context, ctrl *ext.Controller) bool {
 func do_markdown_get(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
 
-	if !util.Exist(path.Join(ctx.app.options.MarkdownRoot, r.URI())) {
+	if !util.Exist(path.Join(ctx.app.Options.MarkdownRoot, r.URI())) {
 		return false
 	}
 
@@ -41,8 +41,8 @@ func do_markdown_get(ctx *context, ctrl *ext.Controller) bool {
 			tname = pg.Template()
 		}
 		if tname == "" {
-			ctx.app.configs.SetSection("h2object")
-			tname = ctx.app.configs.StringDefault("markdown.template", "")
+			ctx.app.Configs.SetSection("h2object")
+			tname = ctx.app.Configs.StringDefault("markdown.template", "")
 		}
 
 		if tname != "" {
@@ -62,14 +62,14 @@ func do_markdown_put(ctx *context, ctrl *ext.Controller) bool {
 	dir, file := path.Split(r.URI())
 	
 	// create markdown dir if not exist
-	realDir := path.Join(ctx.app.options.MarkdownRoot, dir)
+	realDir := path.Join(ctx.app.Options.MarkdownRoot, dir)
 	if err := os.MkdirAll(realDir, os.ModePerm); err != nil {
 		ctrl.JsonError(http.StatusInternalServerError, err)
 		return true
 	}
 
 	// local filesystem static file processing
-	fn := path.Join(ctx.app.options.MarkdownRoot, r.URI())
+	fn := path.Join(ctx.app.Options.MarkdownRoot, r.URI())
 	tmp := fn + ".tmp"
 	
 	fd, err := os.Create(tmp)
@@ -111,7 +111,7 @@ func do_template(ctx *context, ctrl *ext.Controller) bool {
 
 func do_template_get(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
-	if !util.Exist(path.Join(ctx.app.options.TemplateRoot, r.URI())) {
+	if !util.Exist(path.Join(ctx.app.Options.TemplateRoot, r.URI())) {
 		return false
 	}
 
@@ -133,14 +133,14 @@ func do_template_put(ctx *context, ctrl *ext.Controller) bool {
 	dir, file := path.Split(r.URI())
 	
 	// create markdown dir if not exist
-	realDir := path.Join(ctx.app.options.TemplateRoot, dir)
+	realDir := path.Join(ctx.app.Options.TemplateRoot, dir)
 	if err := os.MkdirAll(realDir, os.ModePerm); err != nil {
 		ctrl.JsonError(http.StatusInternalServerError, err)
 		return true
 	}
 
 	// local filesystem static file processing
-	fn := path.Join(ctx.app.options.TemplateRoot, r.URI())
+	fn := path.Join(ctx.app.Options.TemplateRoot, r.URI())
 	tmp := fn + ".tmp"
 	
 	fd, err := os.Create(tmp)
@@ -184,24 +184,24 @@ func do_configure_get(ctx *context, ctrl *ext.Controller) bool {
 	section := strings.Trim(r.TrimSuffixURI(".conf"), "/")	
 	ctx.Trace("conf get section (%s)", section)
 
-	if ctx.app.configs.HasSection(section) == false {		
+	if ctx.app.Configs.HasSection(section) == false {		
 		ctrl.JsonError(http.StatusNotImplemented, errors.New("section not exist:" + section))
 		return true
 	}
 
-	ctx.app.configs.SetSection(section)
+	ctx.app.Configs.SetSection(section)
 
 	data := map[string]string{}
 	fields := r.Params("field")
 	if len(fields) == 0 {
-		options := ctx.app.configs.Options("")
+		options := ctx.app.Configs.Options("")
 		for _, opt := range options {
-			data[opt] = ctx.app.configs.StringDefault(opt, "")
+			data[opt] = ctx.app.Configs.StringDefault(opt, "")
 		}
 	}
 
 	for _, field := range fields {
-		data[field] = ctx.app.configs.StringDefault(field, "")
+		data[field] = ctx.app.Configs.StringDefault(field, "")
 	}
 
 	ctrl.Json(data)
@@ -213,12 +213,12 @@ func do_configure_put(ctx *context, ctrl *ext.Controller) bool {
 	section := strings.Trim(r.TrimSuffixURI(".conf"), "/")	
 	ctx.Trace("conf put section (%s)", section)
 
-	if ctx.app.configs.HasSection(section) == false {		
+	if ctx.app.Configs.HasSection(section) == false {		
 		ctrl.JsonError(http.StatusNotImplemented, errors.New("section not exist:" + section))
 		return true
 	}
 
-	ctx.app.configs.SetSection(section)
+	ctx.app.Configs.SetSection(section)
 
 	data := map[string]interface{}{}
 	if err := r.JsonData(&data); err != nil {
@@ -228,14 +228,14 @@ func do_configure_put(ctx *context, ctrl *ext.Controller) bool {
 
 	for k, v := range data {
 		if str, ok := v.(string); ok {
-			ctx.app.configs.SetOption(k, str)
+			ctx.app.Configs.SetOption(k, str)
 		} else {
 			ctrl.JsonError(http.StatusBadRequest, errors.New("conf value must be string type"))
 			return true
 		}
 	}
 
-	defer ctx.app.configs.Save("")
+	defer ctx.app.Configs.Save("")
 
 	ctrl.Json(map[string]interface{}{
 		"section": section,
@@ -250,7 +250,7 @@ func do_export(ctx *context, ctrl *ext.Controller) bool {
 		return true
 	}
 
-	directory := path.Join(ctx.app.options.Root, r.TrimSuffixURI(".export"))
+	directory := path.Join(ctx.app.Options.Root, r.TrimSuffixURI(".export"))
 	var tarOpt archive.TarOptions
 	tarOpt.ExcludePatterns = append(tarOpt.ExcludePatterns, 
 		".tmp", ".h2object", "h2object.pid", "h2object.conf")
@@ -267,7 +267,7 @@ func do_export(ctx *context, ctrl *ext.Controller) bool {
 		fname = "h2object"
 	}
 	fname = fname + ".tar.gz"
-	fn := path.Join(ctx.app.options.TempRoot, fname)
+	fn := path.Join(ctx.app.Options.TempRoot, fname)
 
 	fd, err := os.Create(fn)
 	if err != nil {
