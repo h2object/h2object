@@ -4,7 +4,7 @@ import (
 	"strings"
 	"os"
 	"path/filepath"
-	l4g "code.google.com/p/log4go"
+	l4g "github.com/h2object/log4go"
 )
 
 type H2OLogger struct{
