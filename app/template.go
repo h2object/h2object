@@ -244,6 +244,13 @@ func t_page_no(item *PaginationItem) int {
 	return 0
 }
 
+func t_page_size(item *PaginationItem) int {
+	if item != nil {
+		return item.PageSize
+	}
+	return 0
+}
+
 func t_page_link(item *PaginationItem) string {
 	if item != nil {
 		return item.PageLink
@@ -347,8 +354,9 @@ func init() {
 	h2object.Function("all", t_all)
 
 	// pagination
-	h2object.Function("pg_no", t_page_no)
-	h2object.Function("pg_link", t_page_link)	
+	h2object.Function("page_no", t_page_no)
+	h2object.Function("page_size", t_page_size)
+	h2object.Function("page_link", t_page_link)	
 	
 }
 

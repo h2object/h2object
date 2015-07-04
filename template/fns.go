@@ -51,21 +51,7 @@ var (
 		"dump": func(v interface{}) template.HTML {
 			return template.HTML(fmt.Sprintf("%v", v))
 		},
-		// "object": func(bucket, key string) interface{} {
-		// 	ctx := GetContext()
-		// 	if ctx != nil {
-		// 		obj, err := NewObject(bucket, key)
-		// 		if err != nil {
-		// 			return nil
-		// 		}
-		// 		if err := ctx.app.objects.GetObject(obj, -1, -1); err != nil {
-		// 			return nil
-		// 		}
 
-		// 		return obj.Value()
-		// 	}
-		// 	return nil
-		// },
 		"goto": func(uri string) template.JS {
 			script := `<script language="javascript">window.location.href="%s";</script>`
 			return template.JS(fmt.Sprintf(script, uri))
@@ -83,10 +69,11 @@ var (
 
 		// Format a date according to the application's default date(time) format.
 		"date": func(date time.Time) string {
-			return date.Format("2006-03-23")
+			return fmt.Sprintf("%4d-%02d-%02d", date.Year(), date.Month(), date.Day())
 		},
 		"datetime": func(date time.Time) string {
-			return date.Format("2006-03-23 10:34:32")
+			return fmt.Sprintf("%4d-%02d-%02d %02d:%02d:%02d", date.Year(), date.Month(), date.Day(),
+				date.Hour(), date.Minute(), date.Second())
 		},
 		"even": func(a int) bool { return (a % 2) == 0 },
 	}

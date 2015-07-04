@@ -184,8 +184,7 @@ func (pages *Pages) retrieve() error {
 			}	
 			datas = append(datas, vals...)
 		}
-		pages.ctx.Info("retrieve pages datas len:(%d)", len(datas))	
-
+	
 		for _, data := range datas {
 			pg := page.NewPage("")
 			if err := pg.SetData(data); err != nil {
@@ -206,8 +205,7 @@ func (pages *Pages) retrieve() error {
 	}
 
 	pages.results = append(pages.results, pgs...)
-	
-	pages.ctx.Info("retrieve pages results len:(%d)", len(pages.results))	
+	pages.ctx.Info("pages uri (%s) len(queries) (%d) total (%d) offset:size (%d:%d)", pages.uri, len(pages.queries), pages.total, pages.offset, pages.size)
 	return nil
 }
 
@@ -255,7 +253,6 @@ func (pages *Pages) Limit(offset, size int64) []*page.Page {
 	pages.range_size(offset, size)	
 	pages.retrieve()
 	
-	pages.ctx.Info("pages (%d:%d) limit (%d:%d)", len(pages.results), pages.total, offset, size)
 	// result only store the limit pages
 	if len(pages.queries) > 0 {
 		return pages.results

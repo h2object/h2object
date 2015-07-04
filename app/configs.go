@@ -32,7 +32,7 @@ func NewCONFIG() *CONFIG {
 	return &CONFIG{
 		filename: "",
 		section: "",
-		config: config.New(config.DEFAULT_COMMENT, config.ALTERNATIVE_SEPARATOR, false, true),
+		config: config.New(config.DEFAULT_COMMENT, config.DEFAULT_SEPARATOR, false, true),
 	}
 }
 
@@ -54,7 +54,7 @@ func DefaultCONFIG() *CONFIG {
 	secret, _ := util.AlphaStringRange(32, 36)
 	default_config.config.AddOption("h2object", "appid", appid)
 	default_config.config.AddOption("h2object", "secret", secret)
-	default_config.config.AddOption("h2object", "", "index.html")
+	default_config.config.AddOption("h2object", "index", "")
 
 	default_config.config.AddOption("h2object", "markdown.cache", "10m")
 	default_config.config.AddOption("h2object", "markdown.suffix", "md,markdown")
