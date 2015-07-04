@@ -1,5 +1,6 @@
-h2object: a static website generator & deploy tool with markdown grammar
+h2object
 =============
+another fast & flexible static website generator & deployment tool
 
 ## What's h2object?
 
