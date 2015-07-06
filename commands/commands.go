@@ -4,7 +4,7 @@ import (
 	"github.com/codegangsta/cli"
 )
 
-const version = "1.0.0"
+const version = "1.0.1"
 const author = ""
 const support = "liujianping@h2object.io"
 
