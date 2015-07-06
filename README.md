@@ -42,7 +42,7 @@ open your explore, type http://127.0.0.1:9000, get the tutorial to start.
 
 -	[conception](https://github.com/h2object/h2object/blob/master/doc/english/basic.md)
 -	[configure](https://github.com/h2object/h2object/blob/master/doc/english/configure.md)
--	[commands](https://github.com/h2object/h2object/blob/master/doc/english/commands.md)
+-	[commands](https://github.com/h2object/h2object/blob/master/doc/english/command.md)
 -	[markdown](https://github.com/h2object/h2object/blob/master/doc/english/markdown.md)
 -	[template](https://github.com/h2object/h2object/blob/master/doc/english/template.md)
 -	[functions](https://github.com/h2object/h2object/blob/master/doc/english/functions.md)
