@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"bufio"
 	"time"
-	"strings"
 	"path/filepath"
 	"github.com/revel/revel"
 	"github.com/codegangsta/cli"
@@ -39,26 +38,6 @@ func authNewCommand(ctx *cli.Context) {
 	stdout := os.Stdout
 	stderr := os.Stderr
 
-	config, err := LoadConfigFile(workdir)
-	if  err == nil {
-		if config.Auth.Secret != "" {
-			prompt(stdout, "exist an old account in directory, still want to new account (yes).", "yes|no")
-			choose := readInput(stdin, stdout)
-			if strings.HasPrefix(strings.ToLower(choose), "n") {
-				fmt.Fprintln(stdout, "none new account created.")
-				os.Exit(0)
-			}
-
-			if strings.HasPrefix(strings.ToLower(choose), "y") || choose == "" {
-				goto NewAccount
-			}
-
-			fmt.Fprintln(stdout, "unknown choose command.")
-			os.Exit(0)
-		}
-	}
-
-NewAccount:
 	fmt.Fprintf(stdout, "new account need to be actived through email, please use your valid email address.\n")
 	prompt(stdout, "account email", "")
 	authid := readInput(stdin, stdout)
@@ -87,7 +66,8 @@ NewAccount:
 	host := ctx.String("Host")
 	port := ctx.Int("Port")
 	client := NewClient(workdir, host, port)
-	if err := client.SignUp(authid, password, config.Auth); err != nil {
+
+	if err := client.SignUp(authid, password, nil); err != nil {
 		fmt.Fprintln(stderr, "\n", err.Error())
 		os.Exit(1)
 	}

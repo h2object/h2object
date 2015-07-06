@@ -30,7 +30,7 @@ You can install the h2object tool by several ways.
 	$: cp h2object /user/local/bin/
 ````
 
-### Pull tutorial to start
+### Pull tutorial to local
 
 ````
 	$: h2object -w=/path/to/work theme pull h2object/tutorial.en:1.0.0
@@ -38,7 +38,7 @@ You can install the h2object tool by several ways.
 ````
 open your explore, type http://127.0.0.1:9000, get the tutorial to start.
 
-###	Tutorial
+###	Tutorial online
 
 -	[conception](https://github.com/h2object/h2object/blob/master/doc/english/basic.md)
 -	[configure](https://github.com/h2object/h2object/blob/master/doc/english/configure.md)
