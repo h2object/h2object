@@ -2,6 +2,8 @@ h2object
 =============
 another fast & flexible static website generator & deployment tool
 
+[简体中文](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md)
+
 ## What's h2object?
 
 At First h2object project just as name , provider the object service over http api.
