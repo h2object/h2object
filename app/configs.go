@@ -43,7 +43,6 @@ func DefaultCONFIG() *CONFIG {
 	default_config.config.AddOption("theme", "catagory", "0")
 	default_config.config.AddOption("theme", "version", "0.0.1")
 	default_config.config.AddOption("theme", "description", "h2object demo site")
-	default_config.config.AddOption("theme", "price", "0.0")
 	
 	default_config.config.AddOption("deploy", "host", "h2object.io")
 	default_config.config.AddOption("deploy", "port", "80")

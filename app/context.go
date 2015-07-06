@@ -88,6 +88,12 @@ func (ctx *context) get_page(uri string) *page.Page {
 	return nil
 }
 
+func (ctx *context) del_page(uri string) {
+	if err := ctx.app.pages.Del(uri); err != nil {
+		ctx.Warn("context del (%s) page failed:(%s)", uri, err)
+	}
+}
+
 func (ctx *context) put_page(uri string, pg *page.Page) {
 	if pg != nil {
 		if err := ctx.app.pages.Put(uri, pg.GetData()); err != nil {

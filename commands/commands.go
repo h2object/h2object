@@ -13,7 +13,7 @@ func App() *cli.App {
 
 	//! app settings
 	app.Name = "h2object"
-	app.Usage = "another http server with themes to build statics & markdown web site"
+	app.Usage = "another fast & flexible static website generator & deployment tool"
 	app.Version = version
 	app.Author = author
 	app.Email = support

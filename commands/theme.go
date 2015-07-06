@@ -31,7 +31,6 @@ type Theme struct{
 	ModifyAt    int64	`db:"modify_at" json:"modify_at"`
 }
 
-
 func catagory_print(catagory int64) string {
 	switch catagory {
 	case 0:
@@ -96,7 +95,7 @@ func themeSearchCommand(ctx *cli.Context) {
 		fmt.Fprintf(w, "%s/%s:%s\t%s\t%s\t%d\t%s\n", theme.Provider, theme.Name, theme.Version, status_print(theme.Stat),catagory_print(theme.Catagory), theme.Apps, theme.Description)
 	}
 	fmt.Fprintf(w, "\n")
-	fmt.Fprintf(w, "The repository has %d themes totally. ", result.Total)
+	fmt.Fprintf(w, "The repository has %d themes totally.", result.Total)
 	if result.Total > result.Count {
 		fmt.Fprintf(w, "You can use -page or -size to show the left themes\n")
 	} else {

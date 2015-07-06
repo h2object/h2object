@@ -90,7 +90,10 @@ func do_markdown_put(ctx *context, ctrl *ext.Controller) bool {
 	}
 
 	// for cache
-	defer ctx.get_page(r.URI())
+	defer func() {
+		ctx.del_page(r.URI())
+		ctx.get_page(r.URI())
+	}()
 
 	ctrl.Json(map[string]interface{}{
 			"markdown": file,

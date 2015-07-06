@@ -190,9 +190,9 @@ func (pages *Pages) retrieve() error {
 			if err := pg.SetData(data); err != nil {
 				continue
 			}
-			pages.results = append(pages.results, pg)
+			pgs = append(pgs, pg)
 		}
-		pages.total = int64(len(pages.results))
+		pages.total = int64(len(pgs))
 	}
 
 	if pages.order != nil {

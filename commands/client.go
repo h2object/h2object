@@ -4,7 +4,7 @@ import (
 	"io"
 	"fmt"	
 	"bytes"
-	"strconv"
+	// "strconv"
 	"net/url"
 	"net/http"
 	"encoding/json"
@@ -125,13 +125,13 @@ func (cli *Client) ThemeSearch(token string, keyword string, catagory int64, pag
 		params.Set("token", token)
 	}
 	if catagory != 0 {
-		params.Set("catagory", strconv.FormatInt(catagory, 64))
+		params.Set("catagory", fmt.Sprintf("%d", catagory))
 	}
 	if page != 0 {
-		params.Set("page", strconv.FormatInt(page, 64))
+		params.Set("page", fmt.Sprintf("%d", page))
 	}
 	if size != 0 {
-		params.Set("size", strconv.FormatInt(size, 64))
+		params.Set("size", fmt.Sprintf("%d", size))
 	}
 	URL := rpc.BuildHttpURL(cli.addr, "/themes/search", params)	
 	if err := cli.conn.Get(nil, URL, themes); err != nil {
