@@ -1,7 +1,7 @@
 模板函数
 ======
 
-[Back](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
+[返回目录](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
 
 现在我们知道, 要将 markdown 文件中的 头信息 和 正文 输出到模板页 并最终生成 html 页面，是需要 模板函数 进行辅助输出的。通过模板函数我们可以找出markdown 文件的任意部分的的正文并且可以检索一组markdown文件，找出需要的markdown文件。
 

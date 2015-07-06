@@ -1,7 +1,7 @@
 template
 ========
 
-[Back](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
+[返回目录](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
 
 在 h2object 服务中, 应用通过 markdown 提供内容; 通过 template 提供页面样式。
 

@@ -1,7 +1,7 @@
 markdown
 ========
 
-[Back](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
+[返回目录](https://github.com/h2object/h2object/blob/master/doc/chinese/index.md) 
 
 在 h2object 服务中, 通过 markdown 文件内容提供生成最终html页面的正文。常规的 markdown 文件, 可以在 h2object 中直接支持并生成相应的html页面。 在 h2object 中, 对可以识别的markdown文件增加了一项功能, 即文件的头信息的支持。
 
