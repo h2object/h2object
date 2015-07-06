@@ -1,9 +1,3 @@
-{
-	"title": "基本概念",	
-	"template": "default.html",
-	"weight": 1
-}
-
 基本概念
 ======
 
