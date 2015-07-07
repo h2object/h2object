@@ -51,6 +51,24 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 
 ![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
 
+在本地[deploy]配置项设置好, 远端h2object应用的相关参数即可以一键进行发布。具体配置包括：
+
+````
+[deploy]
+# 远端部署服务 域名 或 地址
+host= h2object.io
+# 远端部署服务 端口
+port= 80
+# 远端应用ID
+appid= 
+# 远端应用密钥
+secret= 
+````
+### 二维码分享
+
+所有 h2object 服务提供的资源URI, 均可以通过 url 参数<kbd>qrcode=256</kbd>, 设置好相应的二维码像素值。即可产生二维码图片。
+
+
 ### 使用指南
 
 -	[基本概念](https://github.com/h2object/h2object/blob/master/doc/chinese/basic.md)
