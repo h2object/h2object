@@ -80,6 +80,7 @@ func do_static_put(ctx *context, ctrl *ext.Controller) bool {
 		defer func(key string, file string) {
 		
 			helper := third.NewQiniuHelper(qiniu_appid, qiniu_secret, ctx.app.cache)		
+			helper.Del(qiniu_bucket, key)
 			key, err := helper.PutFile(qiniu_bucket, key, file)
 			if err != nil {
 				ctx.Warn("request static qiniu put failed: (%s)", err.Error())
