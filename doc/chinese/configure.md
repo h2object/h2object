@@ -19,6 +19,8 @@ h2object 配置非常简单, 主要包括四个**section**, 分别如下:
 
 ````
 [h2object]
+# 应用服务地址 格式(域名 或 IP:PORT), 主要用于 QRCODE 路径
+host= 
 # 资源默认访问页
 index= 
 # markdown 页面缓存时间

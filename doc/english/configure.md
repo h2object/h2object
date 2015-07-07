@@ -17,6 +17,8 @@ this section is major section for h2object application.
 
 ````
 [h2object]
+# service host format(domain or IP:PORT), if empty, the value will be the listenning ip:port
+host=
 # default uri index page name
 index= 
 # markdown page's cache duration, and the unit should in (1ns, 1us, 1ms, 1s, 1m, 1h)
