@@ -47,6 +47,10 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 	$: h2object -w=/path/to/work http start
 ````
 
+### 一键发布
+
+[https://github.com/h2object/h2object/blob/master/doc/img/deploy.png]
+
 ### 使用指南
 
 -	[基本概念](https://github.com/h2object/h2object/blob/master/doc/chinese/basic.md)
