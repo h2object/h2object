@@ -36,6 +36,11 @@ func NewQiniuHelper(accessKey, secretKey string, cache object.Cache) *QiniuHelpe
 	}
 }
 
+func (helper *QiniuHelper) Del(bucket string, key string) error {
+	client := rs.New(nil)
+	return client.Delete(nil, bucket, key)
+}
+
 func (helper *QiniuHelper) Put(bucket string, key string, rd sysio.Reader, size int64) (string, error) {
 	token := helper.token(bucket)
 
@@ -47,7 +52,9 @@ func (helper *QiniuHelper) Put(bucket string, key string, rd sysio.Reader, size 
 	// CheckCrc: CheckCrc,
 	}
 	if err := io.Put2(nil, &ret, token, key, rd, size, extra); err != nil {
-		helper.cache.Delete(fmt.Sprintf("%s:%s", helper.AccessKey, bucket))
+		if helper.cache != nil {
+			helper.cache.Delete(fmt.Sprintf("%s:%s", helper.AccessKey, bucket))	
+		}		
 		return "", err
 	}
 	return ret.Key, nil
@@ -64,17 +71,21 @@ func (helper *QiniuHelper) PutFile(bucket string, key string, fn string) (string
 	// CheckCrc: CheckCrc,
 	}
 	if err := io.PutFile(nil, &ret, token, key, fn, extra); err != nil {
-		helper.cache.Delete(fmt.Sprintf("%s:%s", helper.AccessKey, bucket))
+		if helper.cache != nil {
+			helper.cache.Delete(fmt.Sprintf("%s:%s", helper.AccessKey, bucket))	
+		}
 		return "", err
 	}
 	return ret.Key, nil
 }
 
 func (helper *QiniuHelper) token(bucketName string) string {
-	tk, ok := helper.cache.Get(fmt.Sprintf("%s:%s", helper.AccessKey, bucketName))
-	if ok {
-		return tk.(string)
-	} 
+	if helper.cache != nil {
+		tk, ok := helper.cache.Get(fmt.Sprintf("%s:%s", helper.AccessKey, bucketName))
+		if ok {
+			return tk.(string)
+		} 		
+	}
 
 	duration := time.Hour
 	putPolicy := rs.PutPolicy{
@@ -90,6 +101,8 @@ func (helper *QiniuHelper) token(bucketName string) string {
 	}
 
 	tk2 := putPolicy.Token(nil)
-	helper.cache.Set(fmt.Sprintf("%s:%s", helper.AccessKey, bucketName), tk2, duration)
+	if helper.cache != nil {
+		helper.cache.Set(fmt.Sprintf("%s:%s", helper.AccessKey, bucketName), tk2, duration)	
+	}	
 	return tk2
 }
