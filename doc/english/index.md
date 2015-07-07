@@ -38,6 +38,10 @@ You can install the h2object tool by several ways.
 ````
 open your explore, type http://127.0.0.1:9000, get the tutorial to start.
 
+### Deployment flow
+
+![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
+
 ###	Tutorial online
 
 -	[conception](https://github.com/h2object/h2object/blob/master/doc/english/basic.md)

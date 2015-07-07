@@ -121,12 +121,14 @@ func (app *Application) Init() error {
 	}
 
 	// context set
+	host := app.Configs.StringDefault("host", app.Options.HTTPAddress)
 	index := app.Configs.StringDefault("index", "")
 	appid := app.Configs.StringDefault("appid", "")
 	secret := app.Configs.StringDefault("secret", "")
 	duration := app.Configs.DurationDefault("markdown.cache", 10 * time.Minute)
 
 	ctx := new_context(app)
+	ctx.host = host
 	ctx.index = index
 
 	ctx.signature = util.SignString(secret, appid)

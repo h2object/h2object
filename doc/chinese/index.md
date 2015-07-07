@@ -36,6 +36,9 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 	$: go build
 	$: cp h2object /user/local/bin/
 ````
+### 一键发布
+
+![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
 
 ### 快速指南
 

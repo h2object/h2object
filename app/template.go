@@ -1,6 +1,7 @@
 package app
 
 import (	
+	"fmt"
 	"time"
 	"strconv"
 	"reflect"
@@ -265,6 +266,16 @@ func t_path(u *url.URL) string {
 	return ""
 }
 
+func t_qrcode(size int, u *url.URL) template.HTML {
+	ctx := get_context()
+	if ctx != nil {
+		if link, err := ctx.qrcode_link(u, size); err == nil {
+			return template.HTML(fmt.Sprintf(`<img src="%s" \>`, link))
+		}
+	}
+	return template.HTML("")
+}
+
 func t_param(key string, dft interface{}, u *url.URL) interface{} {
 	if u != nil {
 		val := u.Query().Get(key)
@@ -312,10 +323,12 @@ func t_param(key string, dft interface{}, u *url.URL) interface{} {
 	return dft
 }
 
+
 func init() {
 	// url
 	h2object.Function("path", t_path)
 	h2object.Function("param", t_param)
+	h2object.Function("qrcode", t_qrcode)
 
 	// single page template method
 	h2object.Function("page", t_page)

@@ -105,4 +105,11 @@ func Exist(path string) bool {
 	return true
 }
 
+func QrcodeKey(uri string, size int) string {
+	s := strings.TrimPrefix(uri, "/")
+	s = strings.Replace(s, "/", "-", -1)
+	s = strings.Replace(s, ".", "_", -1)
+	return fmt.Sprintf("%sx%d",s, size)
+}
+
 

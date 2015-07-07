@@ -5,10 +5,13 @@ import (
 	"time"
 	"path"
 	"errors"
+	"strconv"
+	"net/url"
 	"io/ioutil"
 	"github.com/h2object/h2object/log"
 	"github.com/h2object/h2object/util"
 	"github.com/h2object/h2object/page"
+	qrcode "github.com/skip2/go-qrcode"
 )
 
 var (
@@ -18,6 +21,7 @@ var (
 type context struct{
 	log.Logger
 	app *Application
+	host 	  string
 	index 	  string
 	signature string
 	markdowns []string
@@ -148,4 +152,72 @@ func (ctx *context) folder_pages(root, folder string, suffixes []string) error {
 
 func (ctx *context) init_pages() error {
 	return ctx.folder_pages("/", ctx.app.Options.MarkdownRoot, ctx.markdowns)
+}
+
+type QRCode struct{
+	Value string
+	File  string
+	Link  string
+}
+
+func (ctx *context) qrcode_generate(u *url.URL, size int) (*QRCode, error) {
+	u2 := ctx.qrcode_url(u)
+
+	var qc QRCode
+	qc.Value = u2.String()
+	qc.File = path.Join(ctx.app.Options.StaticRoot, "qrcode", util.QrcodeKey(u2.Path, size))
+
+	query := u2.Query()
+	query.Set("qrcode", strconv.Itoa(size))
+
+	u3 := u2
+	u3.RawQuery = query.Encode()
+	qc.Link = u3.String()
+
+	if util.Exist(qc.File) {
+		return &qc, nil
+	}
+	if err := qrcode.WriteFile(qc.Value, qrcode.High, size, qc.File); err != nil {
+		return nil, err
+	}
+
+	return &qc, nil
+}
+
+
+func (ctx *context) qrcode_url(u *url.URL) *url.URL {
+	q := u.Query()
+	q.Del("qrcode")
+	u.RawQuery = q.Encode()
+	if u.Scheme == "" {
+		u.Scheme = "http"
+	}
+	if u.Host == "" {
+		u.Host = ctx.host	
+	}
+	return u
+}
+
+func (ctx *context) qrcode_path(u *url.URL, size int) (string, error) {
+	code, err := ctx.qrcode_generate(u, size)
+	if err != nil {
+		return "", err
+	}
+	return code.File, nil
+}
+
+func (ctx *context) qrcode_value(u *url.URL, size int) (string, error) {
+	code, err := ctx.qrcode_generate(u, size)
+	if err != nil {
+		return "", err
+	}
+	return code.Value, nil
+}
+
+func (ctx *context) qrcode_link(u *url.URL, size int) (string, error) {
+	code, err := ctx.qrcode_generate(u, size)
+	if err != nil {
+		return "", err
+	}
+	return code.Link, nil
 }

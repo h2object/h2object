@@ -53,6 +53,7 @@ func DefaultCONFIG() *CONFIG {
 	secret, _ := util.AlphaStringRange(32, 36)
 	default_config.config.AddOption("h2object", "appid", appid)
 	default_config.config.AddOption("h2object", "secret", secret)
+	default_config.config.AddOption("h2object", "host", "")
 	default_config.config.AddOption("h2object", "index", "")
 
 	default_config.config.AddOption("h2object", "markdown.cache", "10m")
