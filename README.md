@@ -49,7 +49,7 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 
 ### 一键发布
 
-[https://github.com/h2object/h2object/blob/master/doc/img/deploy.png]
+![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
 
 ### 使用指南
 
