@@ -120,22 +120,8 @@ func (app *Application) Init() error {
 		return err
 	}
 
-	// context set
-	host := app.Configs.StringDefault("host", app.Options.HTTPAddress)
-	index := app.Configs.StringDefault("index", "")
-	appid := app.Configs.StringDefault("appid", "")
-	secret := app.Configs.StringDefault("secret", "")
-	duration := app.Configs.DurationDefault("markdown.cache", 10 * time.Minute)
-
+	// context init
 	ctx := new_context(app)
-	ctx.host = host
-	ctx.index = index
-
-	ctx.signature = util.SignString(secret, appid)
-	ctx.markdowns = app.Configs.MultiStringDefault("markdown.suffix", ",", []string{"md", "markdown"})
-	ctx.templates = app.Configs.MultiStringDefault("template.suffix", ",", []string{"html", "htm", "tpl"})
-	ctx.cache_duration = duration
-	ctx.devmode = app.Configs.BoolDefault("develope.mode", false)
 	if err := ctx.init(); err != nil {
 		return err
 	}
@@ -185,6 +171,7 @@ func (app *Application) Main() {
 func (app *Application) Refresh() {
 	app.Info("application refresh ...")
 	app.templates.Refresh()
+	get_context().load()
 }
 
 func (app *Application) Exit() {

@@ -238,6 +238,7 @@ func do_configure_put(ctx *context, ctrl *ext.Controller) bool {
 		}
 	}
 
+	defer ctx.load()
 	defer ctx.app.Configs.Save("")
 
 	ctrl.Json(map[string]interface{}{

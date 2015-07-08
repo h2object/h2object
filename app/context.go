@@ -4,6 +4,7 @@ import (
 	"os"
 	"time"
 	"path"
+	"sync"
 	"errors"
 	"strconv"
 	"net/url"
@@ -19,6 +20,7 @@ var (
 )
 
 type context struct{
+	sync.RWMutex
 	log.Logger
 	app *Application
 	host 	  string
@@ -45,8 +47,39 @@ func new_context(app *Application) *context {
 	}
 }
 
-func (ctx *context) init() error {
-	
+func (ctx *context) init() error {	
+	ctx.load()
+	return ctx.init_pages()
+}
+
+func (ctx *context) load() {	
+	ctx.Lock()
+	defer ctx.Unlock()
+
+	// clear handlers
+	for _, suffix := range ctx.markdowns {
+		delete(handlers, suffix)
+	}
+	for _, suffix := range ctx.templates {
+		delete(handlers, suffix)
+	}
+	delete(handlers, "page")
+	delete(handlers, "system")
+
+	// load
+	conf := ctx.app.Configs
+	conf.SetSection("h2object")
+	appid := conf.StringDefault("appid", "")
+	secret := conf.StringDefault("secret", "")
+	ctx.host = conf.StringDefault("host", ctx.app.Options.HTTPAddress)
+	ctx.index = conf.StringDefault("index", "")
+	ctx.signature = util.SignString(secret, appid)
+	ctx.markdowns = conf.MultiStringDefault("markdown.suffix", ",", []string{"md", "markdown"})
+	ctx.templates = conf.MultiStringDefault("template.suffix", ",", []string{"html", "htm", "tpl"})
+	ctx.cache_duration = conf.DurationDefault("markdown.cache", 10 * time.Minute)
+	ctx.devmode = conf.BoolDefault("develope.mode", false)
+
+	// reset handlers
 	for _, suffix := range ctx.markdowns {
 		handlers[suffix] = do_markdown
 	}
@@ -57,15 +90,7 @@ func (ctx *context) init() error {
 		handlers["page"] = do_page
 		handlers["system"] = do_page
 	}
-
-
-	if err := ctx.init_pages(); err != nil {
-		return err
-	}
-
-	return nil
 }
-
 
 
 func (ctx *context) get_page(uri string) *page.Page {
