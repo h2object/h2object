@@ -5,6 +5,8 @@ H2OBJECT
 
 ## H2OBJECT 是什么?
 
+**又一个Markdown建站工具, 但不只是工具!**
+
 H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 主要提供基于对象的HTTP接口服务。
 
 如今, 项目演变成为提供快速建站与站点发布的工具,主要通过:
@@ -35,9 +37,41 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 
 ````
 	$: go get github.com/h2object/h2object
-	$: go build
-	$: cp h2object /user/local/bin/
 ````
+
+#### 国内安装吐槽(VPN 用户跳过[取经求助](http://tangseng99.com))
+
+TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是得提前做些准备工作:
+
+由于项目中使用了以下两个国内绝对不能直接go get 的依赖包。
+	golang.org/x/net
+	golang.org/x/text
+
+请在 GOPATH 目录下创建相应目录:
+
+	mkdir -p $GOPATH/src/golang.org/x
+	cd $GOPATH/src/golang.org/x
+	git clone https://github.com/golang/net.git
+	git clone https://github.com/golang/text.git
+
+
+### 二进制程序下载
+
+如果你无法直接源码安装或者不想被GFW扰乱心绪, 就直接下载可执行程序吧:
+
+-	mac osx
+
+	[h2object-darwin-amd64.tar.gz](http://dl.h2object.io/h2object/macosx/1.0.1.tar.gz)
+
+-	linux
+
+	[h2object-linux-amd64.tar.gz](http://dl.h2object.io/h2object/linux/1.0.1.tar.gz)
+
+-	windows
+
+	[h2object-windows-amd64.tar.gz](http://dl.h2object.io/h2object/windows/1.0.1.tar.gz)
+
+解压安装,将 h2object 放入系统执行路径中。
 
 ### 离线指南
 
@@ -52,6 +86,22 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 [tutorial.h2object.io](http://tutorial.h2object.io)
 
 ![tutorial](http://tutorial.h2object.io?qrcode=256)
+
+### 博客站点
+
+通过 h2object 快速创建基于Bootstrap主题博客:
+
+````
+	$: h2object -w=/path/to/blog theme pull bootstrap/blog:1.0.0
+	$: h2object -w=/path/to/blog http start
+````
+更多主题查询:
+
+````
+	$: h2object theme search
+````
+等待您来发布更多主题。
+
 
 ### 一键发布
 
@@ -74,6 +124,7 @@ secret=
 
 所有 h2object 服务提供的资源URI, 均可以通过 url 参数<kbd>qrcode=256</kbd>, 设置好相应的二维码像素值。即可产生二维码图片。
 
+### 加入QQ群讨论(159823022)
 
 ### 使用指南
 

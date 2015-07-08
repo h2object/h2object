@@ -118,6 +118,7 @@ func (ctx *context) get_page(uri string) *page.Page {
 }
 
 func (ctx *context) del_page(uri string) {
+	ctx.app.cache.Delete(uri)
 	if err := ctx.app.pages.Del(uri); err != nil {
 		ctx.Warn("context del (%s) page failed:(%s)", uri, err)
 	}
