@@ -39,13 +39,19 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 	$: cp h2object /user/local/bin/
 ````
 
-### 快速指南
+### 离线指南
 
 安装完成后, 可以直接下载 指南主题 到本地目录, 快速开始一个本地的 h2object 指南站点.
 ````
 	$: h2object -w=/path/to/work theme pull h2object/tutorial.ch:1.0.0
 	$: h2object -w=/path/to/work http start
 ````
+
+### 在线指南
+
+[tutorial.h2object.io](http://tutorial.h2object.io)
+
+![tutorial](http://tutorial.h2object.io?qrcode=256)
 
 ### 一键发布
 

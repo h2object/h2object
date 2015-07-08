@@ -7,7 +7,7 @@ import (
 	"bufio"
 	"time"
 	"path/filepath"
-	"github.com/revel/revel"
+	"github.com/h2object/h2object/util"
 	"github.com/codegangsta/cli"
 	"github.com/docker/docker/pkg/term"
 )
@@ -42,7 +42,7 @@ func authNewCommand(ctx *cli.Context) {
 	prompt(stdout, "account email", "")
 	authid := readInput(stdin, stdout)
 	
-	v := revel.ValidEmail()
+	v := util.ValidEmail()
 	if v.IsSatisfied(authid) != true {
 		fmt.Fprintln(stderr, v.DefaultMessage())
 		os.Exit(1)	
@@ -116,7 +116,7 @@ func authLoginCommand(ctx *cli.Context) {
 		prompt(stdout, "account email", "")
 		authid = readInput(stdin, stdout)
 
-		v := revel.ValidEmail()
+		v := util.ValidEmail()
 		if v.IsSatisfied(authid) != true {
 			fmt.Fprintln(stderr, v.DefaultMessage())
 			os.Exit(1)	
@@ -140,7 +140,7 @@ func authLoginCommand(ctx *cli.Context) {
 		prompt(stdout, "account email", "")
 		authid = readInput(stdin, stdout)
 
-		v := revel.ValidEmail()
+		v := util.ValidEmail()
 		if v.IsSatisfied(authid) != true {
 			fmt.Fprintln(stderr, v.DefaultMessage())
 			os.Exit(1)	
