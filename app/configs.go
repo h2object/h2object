@@ -90,17 +90,6 @@ func LoadCONFIG(fn string) (*CONFIG, error) {
 		config: conf,
 	}
 
-	appid, err := util.AlphaStringRange(24, 32)
-	if err != nil {
-		return nil, err
-	}
-	secret, err := util.AlphaStringRange(32, 36)
-	if err != nil {
-		return nil, err
-	}
-	config.config.AddOption("h2object", "appid", appid)
-	config.config.AddOption("h2object", "secret", secret)
-
 	if err := config.Save(""); err != nil {
 		return nil, err
 	}
@@ -199,7 +188,10 @@ func (c *CONFIG) String(option string) (result string, found bool) {
 
 func (c *CONFIG) StringDefault(option, dfault string) string {
 	if r, found := c.String(option); found {
-		return r
+		s := stripQuotes(r)
+		if len(s) != 0 {
+			return s
+		}
 	}
 	return dfault
 }

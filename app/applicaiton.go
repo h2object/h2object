@@ -140,6 +140,7 @@ func (app *Application) Init() error {
 		return err
 	}
 	set_context(ctx)
+	app.Info("application signature (%s)", ctx.signature)
 
 	// service
 	serv := new_service(ctx)

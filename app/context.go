@@ -174,6 +174,7 @@ func (ctx *context) qrcode_generate(u *url.URL, size int) (*QRCode, error) {
 	u3.RawQuery = query.Encode()
 	qc.Link = u3.String()
 
+	ctx.Info("qrcode value:(%s) link:(%s)", qc.Value, qc.Link)
 	if util.Exist(qc.File) {
 		return &qc, nil
 	}

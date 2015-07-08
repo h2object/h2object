@@ -179,22 +179,18 @@ func (indexes *BleveIndexes) Index(uri string, value interface{}) error {
 func (indexes *BleveIndexes) Query(namespace string, query interface{}, offset int64, size int64) (int64, []string, error) {
 	var total int64 = 0
 	var uris []string
-	ns, err := util.Namespace(namespace)
-	if err != nil {
-		return total, uris, err
-	}
 
 	indexes.RLock()
 	defer indexes.RUnlock()
 	
-	node := indexes.nodes.Node(ns)
+	node := indexes.nodes.Node(namespace)
 	if node == nil {
-		return total, uris, fmt.Errorf("none node for namespace: %s", ns)
+		return total, uris, fmt.Errorf("none node for namespace: %s", namespace)
 	}
 
 	var idx bleve.Index
 	if node.GetBind() == nil {
-		index, err := indexes.index(ns, false)
+		index, err := indexes.index(namespace, false)
 		if err != nil {
 			return total, uris, err
 		}
