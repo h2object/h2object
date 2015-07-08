@@ -77,7 +77,7 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 
 安装完成后, 可以直接下载 指南主题 到本地目录, 快速开始一个本地的 h2object 指南站点.
 ````
-	$: h2object -w=/path/to/work theme pull h2object/tutorial.ch:1.0.0
+	$: h2object -w=/path/to/work theme pull h2object/tutorial:1.0.0
 	$: h2object -w=/path/to/work http start
 ````
 
@@ -89,10 +89,10 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 
 ### 博客站点
 
-通过 h2object 快速创建基于Bootstrap主题博客:
+通过 h2object 快速创建博客站点:
 
 ````
-	$: h2object -w=/path/to/blog theme pull bootstrap/blog:1.0.0
+	$: h2object -w=/path/to/blog theme pull h2object/blog:1.0.0
 	$: h2object -w=/path/to/blog http start
 ````
 更多主题查询:

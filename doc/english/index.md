@@ -42,6 +42,20 @@ open your explore, type http://127.0.0.1:9000, get the tutorial to start.
 
 ![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
 
+Before deploy, you should configure the [deploy] section firstly.
+
+````
+[deploy]
+# remote h2object application host
+host= h2object.io
+# remote h2object application port
+port= 80
+# remote h2object application id
+appid= 
+# remote h2object application secret
+secret= 
+````
+
 ###	Tutorial online
 
 -	[conception](https://github.com/h2object/h2object/blob/master/doc/english/basic.md)
