@@ -35,6 +35,11 @@ func App() *cli.App {
 			Value: "",
 			Usage: "local working directory",
 		},
+		cli.StringFlag{
+			Name: "refresh, r",
+			Value: "10m",
+			Usage: "refresh interval",
+		},
 		cli.BoolFlag{
 			Name: "daemon, d",
 			Usage: "run @ daemon mode",
