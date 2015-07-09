@@ -39,13 +39,16 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 	$: go get github.com/h2object/h2object
 ````
 
-#### 国内安装吐槽(VPN 用户跳过[取经求助](http://tangseng99.com))
+#### 国内安装吐槽(VPN 用户跳过)
+
+[取经求助](http://tangseng99.com)
 
 TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是得提前做些准备工作:
 
 由于项目中使用了以下两个国内绝对不能直接go get 的依赖包。
-	golang.org/x/net
-	golang.org/x/text
+	
+ * golang.org/x/net
+ * golang.org/x/text
 
 请在 GOPATH 目录下创建相应目录:
 
