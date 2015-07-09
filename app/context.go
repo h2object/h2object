@@ -69,8 +69,10 @@ func (ctx *context) load() {
 	// load
 	conf := ctx.app.Configs
 	conf.SetSection("h2object")
-	appid := conf.StringDefault("appid", "")
-	secret := conf.StringDefault("secret", "")
+	appid_dft, _ := util.AlphaStringRange(24, 32)
+	secret_dft, _ := util.AlphaStringRange(32, 36)
+	appid := conf.StringDefault("appid", appid_dft)
+	secret := conf.StringDefault("secret", secret_dft)
 	ctx.host = conf.StringDefault("host", ctx.app.Options.HTTPAddress)
 	ctx.index = conf.StringDefault("index", "")
 	ctx.signature = util.SignString(secret, appid)
