@@ -25,6 +25,14 @@ func t_title(pg *page.Page) string {
 	return pg.Title()
 }
 
+func t_published_datetime(pg *page.Page) time.Time {
+	return pg.PublishedDatetime()
+}
+
+func t_summary(max int, pg *page.Page) string {
+	return pg.Summary(max)
+}
+
 func t_uri(pg *page.Page) string {
 	if pg != nil {
 		return pg.Meta("uri").(string)
@@ -334,6 +342,8 @@ func init() {
 	h2object.Function("page", t_page)
 	h2object.Function("uri", t_uri)
 	h2object.Function("title", t_title)
+	h2object.Function("published_datetime", t_published_datetime)
+	h2object.Function("summary", t_summary)
 	h2object.Function("meta", t_meta)
 	h2object.Function("meta_default", t_meta_default)
 	h2object.Function("modify_datetime", t_modify_datetime)

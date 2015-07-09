@@ -48,7 +48,7 @@ func status_print(stat int64) string {
 	case 0:
 		return fmt.Sprintf("private")
 	case 1:
-		return fmt.Sprintf("publish")
+		return fmt.Sprintf("public")
 	}
 	return fmt.Sprintf("%d", stat)
 }
@@ -161,6 +161,11 @@ func themePushCommand(ctx *cli.Context) {
 	}
 
 	pkg.Version = h2oconf.StringDefault("version", "1.0.0")
+	public := h2oconf.BoolDefault("public", false)
+	pkg.Stat = 0
+	if public == true {
+		pkg.Stat = 1
+	}
 	pkg.Price = h2oconf.FloatDefault("price", 0.0)
 	pkg.Catagory = int64(h2oconf.IntDefault("catagory", 0))
 

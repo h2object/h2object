@@ -167,6 +167,34 @@ func (page *Page) Title() string {
 	return file
 }
 
+func (page *Page) PublishedDatetime() time.Time {
+	if published, ok := page.meta["published_datetime"]; ok {
+		if t, err := cast.ToTimeE(published); err == nil {
+			return t
+		}
+	}
+	return page.modify_datetime
+}
+
+func (page *Page) Summary(max int) string {
+	if summary, ok := page.meta["summary"]; ok {
+		return summary.(string)
+	}
+
+	left := max
+	result := ""
+	for _, node := range page.TagNameAll("p") {
+		text := NodeText(node)
+		for _, ch := range text {
+			if left > 0 {
+				left --
+				result = result + string(ch)
+			}
+		}
+	}
+	return result
+}
+
 func (page *Page) Template() string {
 	if tmpl, ok := page.meta["template"]; ok {
 		return tmpl.(string)
