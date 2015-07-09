@@ -34,6 +34,24 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 
 ## 快速开始
 
+### 程序下载
+
+如果你无法直接源码安装或者不想被GFW扰乱心绪, 就直接下载可执行程序吧:
+
+-	mac osx
+
+	[h2object-darwin-amd64.tar.gz](http://dl.h2object.io/h2object/macosx/1.0.1.tar.gz)
+
+-	linux
+
+	[h2object-linux-amd64.tar.gz](http://dl.h2object.io/h2object/linux/1.0.1.tar.gz)
+
+-	windows
+
+	[h2object-windows-amd64.tar.gz](http://dl.h2object.io/h2object/windows/1.0.1.tar.gz)
+
+解压安装,将 h2object 放入系统执行路径中。
+
 ### 源码安装
 
 ````
@@ -58,24 +76,6 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 	git clone https://github.com/golang/net.git
 	git clone https://github.com/golang/text.git
 
-
-### 二进制程序下载
-
-如果你无法直接源码安装或者不想被GFW扰乱心绪, 就直接下载可执行程序吧:
-
--	mac osx
-
-	[h2object-darwin-amd64.tar.gz](http://dl.h2object.io/h2object/macosx/1.0.1.tar.gz)
-
--	linux
-
-	[h2object-linux-amd64.tar.gz](http://dl.h2object.io/h2object/linux/1.0.1.tar.gz)
-
--	windows
-
-	[h2object-windows-amd64.tar.gz](http://dl.h2object.io/h2object/windows/1.0.1.tar.gz)
-
-解压安装,将 h2object 放入系统执行路径中。
 
 ### 离线指南
 
