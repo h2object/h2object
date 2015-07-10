@@ -162,7 +162,7 @@ func deployPullCommand(ctx *cli.Context) {
 			bar.Start()
 			// create multi writer
 			rd := pb.NewPbReader(body, bar)
-			if err := archive.Untar(rd, dir, nil); err != nil {
+			if err := archive.Untar(rd, path.Join(directory, dir), nil); err != nil {
 				fmt.Fprintln(stderr, err.Error())
 				os.Exit(1)
 			}	
