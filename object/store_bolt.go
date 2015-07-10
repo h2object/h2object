@@ -121,12 +121,7 @@ func (store *BoltStore) Get(uri string, nested bool) (interface{}, error) {
 
 func (store *BoltStore) MultiGet(uri string, suffix string, nested bool) ([]interface{}, error) {
 	results := []interface{}{}
-	ns, err := util.Namespace(uri)
-	if err != nil {
-		return results, err
-	}
-
-	bucketkeys := util.PathFolders(ns)
+	bucketkeys := util.PathFolders(uri)
 	var bucket *bolt.Bucket = nil
 	e := store.db.View(func(tx *bolt.Tx) error {	
 		for _, bucketkey := range bucketkeys {
