@@ -23,6 +23,10 @@ type context struct{
 	sync.RWMutex
 	log.Logger
 	app *Application
+	site_name string
+	site_description string
+	site_author string
+	site_contact string
 	host 	  string
 	index 	  string
 	signature string
@@ -69,6 +73,12 @@ func (ctx *context) load() {
 	// load
 	conf := ctx.app.Configs
 	conf.SetSection("h2object")
+
+	ctx.site_name = conf.StringDefault("site.name", "")
+	ctx.site_description = conf.StringDefault("site.description", "")
+	ctx.site_author = conf.StringDefault("site.author", "h2object")
+	ctx.site_contact = conf.StringDefault("site.author", "support@h2object.io")
+
 	appid_dft, _ := util.AlphaStringRange(24, 32)
 	secret_dft, _ := util.AlphaStringRange(32, 36)
 	appid := conf.StringDefault("appid", appid_dft)

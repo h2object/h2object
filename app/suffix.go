@@ -24,5 +24,6 @@ func init() {
 	handlers["md"] = do_markdown
 	handlers["html"] = do_template
 	handlers["conf"] = do_configure
-	handlers["export"] = do_export	
+	handlers["export"] = do_export
+	handlers["xml"] = do_xml
 }

@@ -176,6 +176,27 @@ func (page *Page) PublishedDatetime() time.Time {
 	return page.modify_datetime
 }
 
+func (page *Page) Author() string {
+	if author, ok := page.meta["author"]; ok {
+		return author.(string)
+	} 
+	return ""
+}
+
+func (page *Page) Contact() string {
+	if author, ok := page.meta["contact"]; ok {
+		return author.(string)
+	} 
+	return ""
+}
+
+func (page *Page) Description() string {
+	if description, ok := page.meta["description"]; ok {
+		return description.(string)
+	} 
+	return page.Summary(200)
+}
+
 func (page *Page) Summary(max int) string {
 	if summary, ok := page.meta["summary"]; ok {
 		return summary.(string)

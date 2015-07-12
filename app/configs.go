@@ -50,8 +50,14 @@ func DefaultCONFIG() *CONFIG {
 	default_config.config.AddOption("deploy", "appid", "")
 	default_config.config.AddOption("deploy", "secret", "")
 
+	default_config.config.AddOption("h2object", "site.name", "")
+	default_config.config.AddOption("h2object", "site.author", "h2object")
+	default_config.config.AddOption("h2object", "site.contact", "support@h2object.io")
+	default_config.config.AddOption("h2object", "site.description", "")
+	
 	appid, _ := util.AlphaStringRange(24, 32)
 	secret, _ := util.AlphaStringRange(32, 36)
+	
 	default_config.config.AddOption("h2object", "appid", appid)
 	default_config.config.AddOption("h2object", "secret", secret)
 	default_config.config.AddOption("h2object", "host", "")

@@ -3,14 +3,112 @@ package app
 import (
 	"os"
 	"io"
+	"fmt"
 	"path"
+	"time"
 	"errors"
 	"strings"
 	"net/http"
+	"github.com/h2object/feeds"
 	"github.com/h2object/h2object/util"
 	"github.com/h2object/h2object/httpext"
 	"github.com/docker/docker/pkg/archive"
 )
+
+func do_rss_xml(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
+	dir,_ := path.Split(r.URI())
+
+	pages := NewPages(dir, ctx)
+	pgs := pages.All()
+
+
+	now := time.Now()
+	feed := &feeds.Feed{
+	    Title:       ctx.site_name,
+	    Link:        &feeds.Link{Href: path.Join(ctx.host, dir)},
+	    Description: ctx.site_description,
+	    Author:      &feeds.Author{ctx.site_author, ctx.site_contact},
+	    Created:     now,
+	}
+	for _, page := range pgs {
+		var item feeds.Item
+		item.Title = page.Title()
+		item.Link = &feeds.Link{Href:fmt.Sprintf("http://%s%s", ctx.host, page.URI())}
+		item.Description = page.Description()
+		item.Author = feed.Author
+		if page.Author() != "" {
+			item.Author.Name = page.Author()
+		}
+		if page.Contact() != "" {
+			item.Author.Email = page.Contact()
+		}
+		item.Created = page.PublishedDatetime()
+		feed.Add(&item)
+	}
+
+	rss := &feeds.Rss{feed}
+
+	ctrl.Xml(rss)
+	return true
+}
+
+func do_atom_xml(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
+	dir,_ := path.Split(r.URI())
+
+	pages := NewPages(dir,ctx)
+	pgs := pages.All()
+
+
+	now := time.Now()
+	feed := &feeds.Feed{
+	    Title:       ctx.site_name,
+	    Link:        &feeds.Link{Href: path.Join(ctx.host, dir)},
+	    Description: ctx.site_description,
+	    Author:      &feeds.Author{ctx.site_author, ctx.site_contact},
+	    Created:     now,
+	}
+	for _, page := range pgs {
+		var item feeds.Item
+		item.Title = page.Title()
+		item.Link = &feeds.Link{Href:fmt.Sprintf("http://%s%s", ctx.host, page.URI())}
+		item.Description = page.Description()
+		item.Author = feed.Author
+		if page.Author() != "" {
+			item.Author.Name = page.Author()
+		}
+		if page.Contact() != "" {
+			item.Author.Email = page.Contact()
+		}
+		item.Created = page.PublishedDatetime()
+		feed.Add(&item)
+	}
+
+	atom := &feeds.Atom{feed}
+
+	ctrl.Xml(atom)
+	return true
+}
+
+
+func do_xml(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
+	if r.MethodToLower() != "get" {
+		ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
+		return true
+	}
+	
+	_ ,file := path.Split(r.URI())
+	switch strings.ToLower(file) {
+	case "atom.xml":
+		return do_atom_xml(ctx, ctrl)
+	case "rss.xml":
+		return do_rss_xml(ctx, ctrl)
+	} 
+	ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("request xml not allowed"))
+	return true
+}
 
 func do_markdown(ctx *context, ctrl *ext.Controller) bool {
 	switch ctrl.Request.MethodToLower() {
