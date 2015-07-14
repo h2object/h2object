@@ -50,6 +50,15 @@ func (opt *Options) Prepare(workdir string) error {
 	if err := os.MkdirAll(path.Join(opt.StaticRoot, "qrcode"), os.ModePerm); err != nil {
 		return err
 	}
+	if err := os.MkdirAll(path.Join(opt.StaticRoot, "fit"), os.ModePerm); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(path.Join(opt.StaticRoot, "resize"), os.ModePerm); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(path.Join(opt.StaticRoot, "thumbnail"), os.ModePerm); err != nil {
+		return err
+	}
 	if err := os.MkdirAll(opt.MarkdownRoot, os.ModePerm); err != nil {
 		return err
 	}

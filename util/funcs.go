@@ -4,6 +4,8 @@ import (
 	"os"	
 	"fmt"
 	"path"
+	"path/filepath"
+	"strconv"
 	"strings"
 	"io/ioutil"
 )
@@ -110,6 +112,47 @@ func QrcodeKey(uri string, size int) string {
 	s = strings.Replace(s, "/", "-", -1)
 	s = strings.Replace(s, ".", "_", -1)
 	return fmt.Sprintf("%sx%d",s, size)
+}
+
+type Rect struct{
+	Width 	int
+	Height 	int
+}
+
+func ParseRect(val string, delimeter string) (*Rect, error) {
+	if val == "" {
+		return nil, fmt.Errorf("rect string null")
+	}
+	s := strings.Split(val, delimeter)
+	if len(s) > 2 {
+		return nil, fmt.Errorf("rect format error")
+	}
+
+	width, err := strconv.ParseInt(s[0], 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	var rect Rect
+	rect.Width = int(width)
+
+	if len(s) == 2 {
+		height, err := strconv.ParseInt(s[1], 10, 64)
+		if err != nil {
+			return nil, err
+		}
+		rect.Height = int(height)
+	}
+	return &rect, nil
+}
+
+func ResizeKey(uri string, resize string) string {
+	ext := filepath.Ext(uri)
+	s := strings.TrimPrefix(uri, "/")
+	s = strings.TrimSuffix(s, ext)
+	s = strings.Replace(s, "/", "-", -1)
+	s = strings.Replace(s, ".", "_", -1)
+	return fmt.Sprintf("%s-%s%s",s, resize, ext)
 }
 
 
