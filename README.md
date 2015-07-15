@@ -7,9 +7,7 @@ H2OBJECT
 
 **又一个Markdown建站工具, 但不只是工具!**
 
-H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 主要提供基于对象的HTTP接口服务。
-
-如今, 项目演变成为提供快速建站与站点发布的工具,主要通过:
+H2OBJECT主要通过:
 
  * **markdown**文件提供页面内容
 
@@ -27,7 +25,7 @@ H2OBJECT 项目, 最开始开发的目的如同其名称一样(HTTP to OBJECT), 
 
 -	一键安装、一键发布
 -	二维码分享文章
--	自由灵活的网站风格, 不仅仅是博客也可以是其它基于纯内容的站点
+-	本地图片处理
 -	全文检索支持, 不需要引入第三方插件进行页面的检索
 -	云存储支持, 实现静态资源的自动转储云端
 -	自定义主题发布、分享, 同样一键操作
@@ -75,7 +73,7 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 	cd $GOPATH/src/golang.org/x
 	git clone https://github.com/golang/net.git
 	git clone https://github.com/golang/text.git
-
+	git clone https://github.com/golang/image.git
 
 ### 离线指南
 
