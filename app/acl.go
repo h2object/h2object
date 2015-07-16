@@ -25,6 +25,8 @@ func do_authentic(ctx *context, ctrl *ext.Controller) bool {
 		switch r.Suffix() {
 		case "page":
 			fallthrough
+		case "click":
+			fallthrough	
 		case "system":
 			required = true
 		}
