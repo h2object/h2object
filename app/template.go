@@ -13,6 +13,16 @@ import (
 )
 
 //! page
+func t_click(uri string) int {
+	ctx := get_context()
+	if ctx != nil {
+		if count, err := ctx.get_click(uri); err == nil {
+			return int(count)
+		}
+	}
+	return 0	
+}
+
 func t_page(uri string) *page.Page {
 	ctx := get_context()
 	if ctx != nil {
@@ -113,6 +123,17 @@ func t_node_html(node *html.Node) template.HTML {
 }
 
 //! pages
+func t_clicks(uri string, max int, suffix string) []Click {
+	ctx := get_context()
+	if ctx != nil {
+		if clicks, err := ctx.clicks_desc(uri, max, suffix); err == nil {
+			return clicks
+		}
+		return nil
+	}
+	return nil	
+}
+
 func t_pages(uri string) *Pages {
 	ctx := get_context()
 	if ctx != nil {
@@ -339,6 +360,7 @@ func init() {
 	h2object.Function("qrcode", t_qrcode)
 
 	// single page template method
+	h2object.Function("click", t_click)
 	h2object.Function("page", t_page)
 	h2object.Function("uri", t_uri)
 	h2object.Function("title", t_title)
@@ -356,6 +378,7 @@ func init() {
 	h2object.Function("node_html", t_node_html)
 
 	// multi pages template method
+	h2object.Function("clicks", t_clicks)
 	h2object.Function("pages", t_pages)
 	h2object.Function("nested", t_nested)
 	h2object.Function("query", t_query)

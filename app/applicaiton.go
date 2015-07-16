@@ -38,6 +38,7 @@ type Application struct{
 	systems 	  object.Store
 	objects       object.Store
 	pages         object.Store
+	clicks    	  object.Store
 
 	// template
 	templates 	  *template.TemplateLoader
@@ -110,6 +111,12 @@ func (app *Application) Init() error {
 		return err
 	}
 	app.pages = pages
+
+	clicks := object.NewBoltStore(app.Options.StorageRoot, "clicks.dat", object.BoltCoder{})
+	if err := clicks.Load(); err != nil {
+		return err
+	}
+	app.clicks = clicks
 	// template
 	paths := []string{app.Options.TemplateRoot}
 	delimiters := app.Configs.StringDefault("template.delimiters","{{ }}")

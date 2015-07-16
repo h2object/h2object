@@ -100,7 +100,8 @@ func (ctx *context) load() {
 	}	
 	if ctx.devmode {
 		handlers["page"] = do_page
-		handlers["system"] = do_page
+		handlers["click"] = do_click
+		handlers["system"] = do_system
 	}
 }
 

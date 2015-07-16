@@ -33,6 +33,14 @@ func (srv *service) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	response := ext.NewResponse(w)
 	controller := ext.NewController(request, response)
 
+	defer func() {
+		if !strings.HasSuffix(request.URI(), ".click") {
+			if err := srv.ctx.inc_click(request.URI()); err != nil {
+				srv.ctx.Warn("increment click (%s) failed:(%s)", request.URI(), err.Error())
+			}
+		}		
+	}()
+
 	if strings.HasSuffix(controller.Request.URI(), "/") {
 		controller.Request.URL.Path = path.Join(controller.Request.URL.Path, srv.ctx.index)
 	}

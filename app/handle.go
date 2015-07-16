@@ -414,6 +414,23 @@ func do_page(ctx *context, ctrl *ext.Controller) bool {
 	return true
 }
 
+func do_click(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
+	if r.MethodToLower() != "get" {
+		ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
+		return true
+	}
+
+	val, err := ctx.app.clicks.Get(r.TrimSuffixURI(".click"), true)
+	if err != nil {
+		ctrl.JsonError(http.StatusInternalServerError, err)
+		return true	
+	}
+
+	ctrl.Json(val)
+	return true
+}
+
 func do_system(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
 	if r.MethodToLower() != "get" {
