@@ -69,7 +69,18 @@ func (log *H2OLogger) Error(format string, args ...interface{}) {
 	log.logger.Error(format, args...)
 } 
 func (log *H2OLogger) Critical(format string, args ...interface{}) {
-	log.logger.Critical(format, args...)
+	log.logger.Info(format, args...)
 }
 
+func (log *H2OLogger) Infof(format string, args ...interface{}) {
+	log.logger.Info(format, args...)
+}
+
+func (log *H2OLogger) Warningf(format string, args ...interface{}) {
+	log.logger.Warn(format, args...)
+}
+
+func (log *H2OLogger) Errorf(format string, args ...interface{}) {
+	log.logger.Error(format, args...)
+}
 

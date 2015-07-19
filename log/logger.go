@@ -7,6 +7,10 @@ type Logger interface{
 	Warn(format string, args ...interface{}) 
 	Error(format string, args ...interface{}) 
 	Critical(format string, args ...interface{})
+
+	Infof(format string, args ...interface{})
+	Warningf(format string, args ...interface{})
+	Errorf(format string, args ...interface{})
 }
 
 
