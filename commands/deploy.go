@@ -292,3 +292,49 @@ func deployPushCommand(ctx *cli.Context) {
 		fmt.Printf("push path ignored: %s\n", directory)
 	}
 }
+
+func deployDeleteCommand(ctx *cli.Context) {
+	workdir := ctx.GlobalString("workdir")
+	if workdir == "" {
+		fmt.Println("unknown working directory, please use -w to provide.")
+		os.Exit(1)
+	}
+
+	// directory
+	absworkdir, err := filepath.Abs(workdir)
+	if err != nil {
+		fmt.Println("workdir:", err)
+		return
+	}
+
+	dirs := ctx.Args()
+	if len(dirs) == 0 {
+		fmt.Println("delete file uri absent")
+		return
+	}
+
+	h2oconf, err := app.LoadCONFIG(path.Join(absworkdir, "h2object.conf"))
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	h2oconf.SetSection("deploy")
+	Host := h2oconf.StringDefault("host", "")
+	Port := h2oconf.IntDefault("port", 80)
+	AppID := h2oconf.StringDefault("appid", "")
+	Secret := h2oconf.StringDefault("secret", "")
+
+	client := api.NewClient(Host, Port)
+	auth := api.NewAdminAuth(AppID, Secret)
+	
+	for _, directory := range dirs {
+		directory = strings.TrimPrefix(directory, "markdowns")
+		directory = strings.TrimPrefix(directory, "templates")
+		if err  := client.Delete(nil, auth, directory); err != nil {
+			fmt.Printf("delete (%s) failed: (%s)\n", directory, err.Error())
+			continue
+		}
+		fmt.Printf("delete (%s) ok.\n", directory)
+	}
+}

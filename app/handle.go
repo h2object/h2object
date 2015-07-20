@@ -116,6 +116,8 @@ func do_markdown(ctx *context, ctrl *ext.Controller) bool {
 		return do_markdown_get(ctx, ctrl)
 	case "put":
 		return do_markdown_put(ctx, ctrl)
+	case "delete":
+		return do_markdown_delete(ctx, ctrl)
 	}
 	ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
 	return true
@@ -155,6 +157,21 @@ func do_markdown_get(ctx *context, ctrl *ext.Controller) bool {
 	return false
 }
 
+func do_markdown_delete(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
+
+	if !util.Exist(path.Join(ctx.app.Options.MarkdownRoot, r.URI())) {
+		return false
+	}
+
+	os.Remove(path.Join(ctx.app.Options.MarkdownRoot, r.URI()))
+	ctx.del_page(r.URI())
+
+	ctrl.Json(map[string]interface{}{
+		r.URI(): "deleted",
+	})
+	return true
+}
 func do_markdown_put(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
 	dir, file := path.Split(r.URI())
@@ -205,6 +222,8 @@ func do_template(ctx *context, ctrl *ext.Controller) bool {
 		return do_template_get(ctx, ctrl)
 	case "put":
 		return do_template_put(ctx, ctrl)
+	case "delete":
+		return do_template_delete(ctx, ctrl)
 	}
 	ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
 	return true
@@ -228,7 +247,21 @@ func do_template_get(ctx *context, ctrl *ext.Controller) bool {
 	}	
 	return true
 }
+func do_template_delete(ctx *context, ctrl *ext.Controller) bool {
+	r := ctrl.Request
 
+	if !util.Exist(path.Join(ctx.app.Options.TemplateRoot, r.URI())) {
+		return false
+	}
+
+	os.Remove(path.Join(ctx.app.Options.TemplateRoot, r.URI()))
+	defer ctx.app.templates.Refresh()
+	
+	ctrl.Json(map[string]interface{}{
+		r.URI(): "deleted",
+	})
+	return true
+}
 func do_template_put(ctx *context, ctrl *ext.Controller) bool {
 	r := ctrl.Request
 	dir, file := path.Split(r.URI())

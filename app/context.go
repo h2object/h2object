@@ -96,8 +96,10 @@ func (ctx *context) load() {
 
 	ctx.storage = uint64(util.FolderSize(ctx.app.Options.Root, nil))
 	ctx.storage_max = ctx.app.Options.StorageMax
-	ctx.Info("application storage current size (%s), max size (%s)", 
-		humanize.IBytes(ctx.storage), humanize.IBytes(ctx.storage_max))
+	if ctx.storage_max > 0 {
+		ctx.Info("application storage current size (%s), max size (%s)", 
+		humanize.IBytes(ctx.storage), humanize.IBytes(ctx.storage_max))	
+	}
 
 	// reset handlers
 	for _, suffix := range ctx.markdowns {
@@ -150,6 +152,9 @@ func (ctx *context) del_page(uri string) {
 	ctx.app.cache.Delete(uri)
 	if err := ctx.app.pages.Del(uri); err != nil {
 		ctx.Warn("context del (%s) page failed:(%s)", uri, err)
+	}
+	if err := ctx.app.pageIndexes.Delete(uri); err != nil {
+		ctx.Warn("context del (%s) page index failed:(%s)", uri, err)
 	}
 }
 

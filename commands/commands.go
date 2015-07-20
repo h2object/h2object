@@ -168,7 +168,7 @@ func App() *cli.App {
 			Subcommands: []cli.Command{
 				{
 					Name:  "push",
-					Usage: "deploy @ local => remote ",
+					Usage: "push files @ local => remote ",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
@@ -187,7 +187,7 @@ func App() *cli.App {
 				},
 				{
 					Name:  "pull",
-					Usage: "deploy @ local <= remote",
+					Usage: "pull files @ local <= remote",
 					Flags: []cli.Flag {
 						cli.StringFlag{
 							Name: "Host, H",
@@ -202,6 +202,25 @@ func App() *cli.App {
 					},
 					Action: func(ctx *cli.Context) {
 						deployPullCommand(ctx)	
+					},
+				},
+				{
+					Name:  "delete",
+					Usage: "delete files @ remote",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						deployDeleteCommand(ctx)	
 					},
 				},
 			},

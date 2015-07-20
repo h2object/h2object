@@ -138,6 +138,46 @@ func (indexes *BleveIndexes) IndexIfNotExist(uri string, value interface{}) erro
 	return nil
 }
 
+func (indexes *BleveIndexes) Delete(uri string) error {
+	indexes.Lock()
+	defer indexes.Unlock()
+
+	node := indexes.nodes.Node(path.Dir(uri))
+	if node == nil {
+		return fmt.Errorf("none node for namespace: %s", path.Dir(uri))
+	}
+
+	for {
+		if bind := node.GetBind(); bind != nil {
+			index := bind.(bleve.Index)
+			if err := index.Delete(uri); err != nil {
+				return err
+			}
+		} else {
+			index, err := indexes.index(node.Path(), false)
+			if err != nil {
+				return err
+			}
+			if index != nil {
+				node.SetBind(index)
+				if err := index.Delete(uri); err != nil {
+					return err
+				}
+			}			
+		}
+
+		if !IndexParent {
+			break
+		}
+		node = node.Parent()
+		if node == nil {
+			return nil
+		}
+	}
+
+	return nil
+}
+
 func (indexes *BleveIndexes) Index(uri string, value interface{}) error {
 	indexes.Lock()
 	defer indexes.Unlock()

@@ -10,6 +10,18 @@ import (
 	"github.com/h2object/content-type"
 )
 
+func (h2o *Client) Delete(l Logger, auth Auth, dest_uri string) error {
+	URL := rpc.BuildHttpURL(h2o.addr, dest_uri, nil)
+
+	h2o.Lock()
+	defer h2o.Unlock()
+
+	h2o.conn.Prepare(auth)
+	defer h2o.conn.Prepare(nil)
+
+	return h2o.conn.Delete(l, URL, nil)
+}
+
 func (h2o *Client) Download(l Logger, auth Auth, dest_uri string) (io.ReadCloser, int64, error)  {
 	URL := rpc.BuildHttpURL(h2o.addr, dest_uri, nil)
 

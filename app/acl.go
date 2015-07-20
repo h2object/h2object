@@ -40,6 +40,8 @@ func do_authentic(ctx *context, ctrl *ext.Controller) bool {
 			ctrl.JsonError(http.StatusForbidden, errors.New("application storage reach max limit."))
 			return true
 		}
+	case "delete":
+		required = true
 	}
 
 	token := r.Param("token")

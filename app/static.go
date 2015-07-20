@@ -26,6 +26,8 @@ func do_static(ctx *context, ctrl *ext.Controller) bool {
 		return do_static_get(ctx, ctrl)
 	case "put":
 		return do_static_put(ctx, ctrl)
+	case "delete":
+		return do_static_delete(ctx, ctrl)
 	}
 	ctrl.JsonError(http.StatusMethodNotAllowed, errors.New("method not allowed"))
 	return true
@@ -53,6 +55,35 @@ func do_static_get(ctx *context, ctrl *ext.Controller) bool {
 		}
 	}
 	ctrl.File(path.Join(ctx.app.Options.StaticRoot, r.URI()))
+	return true
+}
+
+func do_static_delete(ctx *context, ctrl *ext.Controller) bool {	
+	r := ctrl.Request
+	
+	if !util.Exist(path.Join(ctx.app.Options.StaticRoot, r.URI())) {
+		return false
+	}
+
+	fn := path.Join(ctx.app.Options.StaticRoot, r.URI())
+
+	ctx.app.Configs.SetSection("third")
+	qiniu_enable := ctx.app.Configs.BoolDefault("qiniu.enable", false)
+	if qiniu_enable {
+		
+		qiniu_appid := ctx.app.Configs.StringDefault("qiniu.appid", "")
+		qiniu_secret := ctx.app.Configs.StringDefault("qiniu.secret", "")
+		qiniu_bucket := ctx.app.Configs.StringDefault("qiniu.bucket", "")	
+		
+		defer func(key string, file string) {
+			helper := third.NewQiniuHelper(qiniu_appid, qiniu_secret, ctx.app.cache)		
+			helper.Del(qiniu_bucket, key)
+		}(third.QiniuKey(r.URI()), fn)
+	}
+	os.Remove(fn)
+	ctrl.Json(map[string]interface{}{
+		r.URI(): "deleted",
+	})
 	return true
 }
 
