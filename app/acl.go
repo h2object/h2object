@@ -36,6 +36,10 @@ func do_authentic(ctx *context, ctrl *ext.Controller) bool {
 		}
 	case "put":
 		required = true
+		if ctx.storage_full() {
+			ctrl.JsonError(http.StatusForbidden, errors.New("application storage reach max limit."))
+			return true
+		}
 	}
 
 	token := r.Param("token")
@@ -46,7 +50,6 @@ func do_authentic(ctx *context, ctrl *ext.Controller) bool {
 		}
 	}
 	if required {
-
 		if token != ctx.signature {
 			ctrl.JsonError(http.StatusUnauthorized, errors.New("require administrator right"))
 			return true

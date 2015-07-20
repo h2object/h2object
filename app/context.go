@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"net/url"
 	"io/ioutil"
+	"github.com/dustin/go-humanize"
 	"github.com/h2object/h2object/log"
 	"github.com/h2object/h2object/util"
 	"github.com/h2object/h2object/page"
@@ -33,6 +34,8 @@ type context struct{
 	markdowns []string
 	templates []string
 	cache_duration time.Duration
+	storage   	uint64
+	storage_max uint64
 	devmode   bool
 }
 
@@ -91,6 +94,11 @@ func (ctx *context) load() {
 	ctx.cache_duration = conf.DurationDefault("markdown.cache", 10 * time.Minute)
 	ctx.devmode = conf.BoolDefault("develope.mode", false)
 
+	ctx.storage = uint64(util.FolderSize(ctx.app.Options.Root, nil))
+	ctx.storage_max = ctx.app.Options.StorageMax
+	ctx.Info("application storage current size (%s), max size (%s)", 
+		humanize.IBytes(ctx.storage), humanize.IBytes(ctx.storage_max))
+
 	// reset handlers
 	for _, suffix := range ctx.markdowns {
 		handlers[suffix] = do_markdown
@@ -104,7 +112,15 @@ func (ctx *context) load() {
 		handlers["system"] = do_system
 	}
 }
-
+func (ctx *context) storage_full() bool {
+	if ctx.storage_max == 0 {
+		return false
+	}
+	if ctx.storage >= ctx.storage_max {
+		return true
+	}
+	return false
+}
 
 func (ctx *context) get_page(uri string) *page.Page {
 	if pg, ok := ctx.app.cache.Get(uri); ok {

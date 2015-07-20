@@ -40,6 +40,11 @@ func App() *cli.App {
 			Value: "10m",
 			Usage: "refresh interval",
 		},
+		cli.StringFlag{
+			Name: "storage, s",
+			Value: "",
+			Usage: "storage max size(kb, kib, mb, mib, gb, gib, tb, tib, pb, pib)",
+		},
 		cli.BoolFlag{
 			Name: "daemon, d",
 			Usage: "run @ daemon mode",

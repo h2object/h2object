@@ -37,6 +37,11 @@ func httpStartCommand(ctx *cli.Context) {
 	refresh := ctx.GlobalString("refresh")
 	options.SetRefreshDefault(refresh, time.Minute * 10)
 
+	storage := ctx.GlobalString("storage")
+	if storage != "" {
+		options.SetStorargeMax(storage)	
+	}	
+
 	// configs
 	configs, err := app.LoadCONFIG(path.Join(options.Root, "h2object.conf"))
 	if err != nil {

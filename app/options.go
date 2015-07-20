@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"path"
 	"path/filepath"
+	"github.com/dustin/go-humanize"
 )
 
 type Options struct{
@@ -19,6 +20,7 @@ type Options struct{
 	IndexesRoot 			string
 	TempRoot 				string
 	Root 					string
+	StorageMax				uint64
 	RefreshInterval 		time.Duration
 }
 
@@ -86,4 +88,13 @@ func (opt *Options) SetRefreshDefault(s string, default_refresh time.Duration) {
 	} else {
 		opt.RefreshInterval = default_refresh
 	}
+}
+
+func (opt *Options) SetStorargeMax(s string) error {
+	val , err := humanize.ParseBytes(s)
+	if err != nil {
+		return err
+	}
+	opt.StorageMax = val
+	return nil
 }
