@@ -244,9 +244,10 @@ func (cli *Client) GetContainers(token string, ids []string, ret interface{}) er
 	return nil
 }
 
-func (cli *Client) CreateContainer(token string, invitation string, ret interface{}) error {
+func (cli *Client) CreateContainer(token string, invitation string, version string, ret interface{}) error {
 	params := url.Values{}
 	params.Set("token", token)
+	params.Set("version", version)
 
 	URL := rpc.BuildHttpURL(cli.addr, "/containers/create", params)	
 	if err := cli.conn.PostForm(nil, URL, map[string][]string{
@@ -257,9 +258,10 @@ func (cli *Client) CreateContainer(token string, invitation string, ret interfac
 	return nil
 }
 
-func (cli *Client) StartContainer(token string, id string, ret interface{}) error {
+func (cli *Client) StartContainer(token string, id string, version string, ret interface{}) error {
 	params := url.Values{}
 	params.Set("token", token)
+	params.Set("version", version)
 
 	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/start", id), params)	
 	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {

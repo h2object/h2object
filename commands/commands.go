@@ -22,7 +22,7 @@ func App() *cli.App {
 	app.Flags = []cli.Flag {
 		cli.StringFlag{
 			Name: "host, l",
-			Value: "127.0.0.1",
+			Value: "0.0.0.0",
 			Usage: "local server host",
 		},
 		cli.IntFlag{

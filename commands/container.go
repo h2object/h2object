@@ -17,17 +17,20 @@ type OUTContainer struct{
 	AppSecret string `json:"secret"`
 	Status string `json:"status"`
 	Storage string `json:"storage"`
+	Version string `json:"version"`
 }
 
 func printOUTContainer(out io.Writer, container OUTContainer) {
 	fmt.Fprintf(out, "------------------------\t\n")
 	fmt.Fprintf(out, "Container ID:\t%s\n", container.ID)
+	fmt.Fprintf(out, "Application Version:\t%s\n", container.Version)
 	fmt.Fprintf(out, "Container System Domain:\t%s\n", container.SystemDomain)
 	fmt.Fprintf(out, "Container Custom Domain:\t%s\n", container.CustomDomain)
 	fmt.Fprintf(out, "Container Status:\t%s\n", container.Status)
 	fmt.Fprintf(out, "Container AppID:\t%s\n", container.AppID)
 	fmt.Fprintf(out, "Container AppSecret:\t%s\n", container.AppSecret)
 	fmt.Fprintf(out, "Container Storage Max:\t%s\n", container.Storage)
+	
 	fmt.Fprintf(out, "\n")
 }
 
@@ -91,7 +94,7 @@ func containerCreateCommand(ctx *cli.Context) {
 	client := NewClient(workdir, host, port)
 	var container OUTContainer
 	
-	if err := client.CreateContainer(token, invitation, &container); err != nil {
+	if err := client.CreateContainer(token, invitation, version, &container); err != nil {
 		fmt.Fprintln(stdout, err.Error())
 		os.Exit(1)
 	}
@@ -125,7 +128,7 @@ func containerStartCommand(ctx *cli.Context) {
 	client := NewClient(workdir, host, port)
 	var container OUTContainer
 
-	if err := client.StartContainer(token, ctx.Args()[0], &container); err != nil {
+	if err := client.StartContainer(token, ctx.Args()[0], version, &container); err != nil {
 		fmt.Fprintln(stdout, err.Error())
 		os.Exit(1)
 	}
