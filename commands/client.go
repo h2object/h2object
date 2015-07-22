@@ -230,3 +230,97 @@ func (cli *Client) ThemePull(token string, pkg *Package) error {
 	return nil
 }
 
+func (cli *Client) GetContainers(token string, ids []string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+	for _, id := range ids {
+		params.Add("container", id)	
+	}
+	
+	URL := rpc.BuildHttpURL(cli.addr, "/containers/json", params)	
+	if err := cli.conn.Get(nil, URL, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) CreateContainer(token string, invitation string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, "/containers/create", params)	
+	if err := cli.conn.PostForm(nil, URL, map[string][]string{
+		"invitation":{invitation},
+	}, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) StartContainer(token string, id string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/start", id), params)	
+	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) StopContainer(token string, id string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/stop", id), params)	
+	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) RestartContainer(token string, id string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/restart", id), params)	
+	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) PauseContainer(token string, id string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/pause", id), params)	
+	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) UnpauseContainer(token string, id string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/unpause", id), params)	
+	if err := cli.conn.PostForm(nil, URL, nil, ret); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (cli *Client) DomainContainer(token string, id string, domain string, ret interface{}) error {
+	params := url.Values{}
+	params.Set("token", token)
+
+	URL := rpc.BuildHttpURL(cli.addr, fmt.Sprintf("/containers/%s/domain", id), params)	
+	if err := cli.conn.PostForm(nil, URL, map[string][]string{
+		"domain":{domain},
+	}, ret); err != nil {
+		return err
+	}
+	return nil
+}

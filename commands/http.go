@@ -35,8 +35,12 @@ func httpStartCommand(ctx *cli.Context) {
 	}
 
 	refresh := ctx.GlobalString("refresh")
-	options.SetRefreshDefault(refresh, time.Minute * 10)
 
+	appid := ctx.String("appid")
+	secret := ctx.String("secret")
+	options.SetRefreshDefault(refresh, time.Minute * 10)
+	options.SetApplication(appid, secret)
+	
 	storage := ctx.GlobalString("storage")
 	if storage != "" {
 		options.SetStorargeMax(storage)	

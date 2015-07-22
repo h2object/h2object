@@ -75,6 +75,15 @@ func (app *Application) Init() error {
 	
 	app.Configs.SetSection("h2object")
 
+
+	if app.Options.AppID != "" {
+		app.Configs.SetOption("appid", app.Options.AppID)
+	}
+	if app.Options.AppSecret != "" {
+		app.Configs.SetOption("secret", app.Options.AppSecret)
+	}
+	
+
 	cache_expire := app.Configs.StringDefault("cache.expire","10m")
 	duration_expire, err := time.ParseDuration(cache_expire)
 	if err != nil {
@@ -150,6 +159,9 @@ func (app *Application) Init() error {
 		app.service = serv
 	}
 
+	if err := app.Configs.Save(""); err != nil {
+		return err
+	}
 	// init succeed
 	return nil
 }

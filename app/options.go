@@ -12,6 +12,8 @@ import (
 type Options struct{
 	HTTPAddress 			string
 	HTTPSAddress    		string
+	AppID					string
+	AppSecret 				string
 	StaticRoot 		string
 	MarkdownRoot	string
 	TemplateRoot 	string
@@ -80,6 +82,15 @@ func (opt *Options) Prepare(workdir string) error {
 		return err
 	}
 	return nil
+}
+
+func (opt *Options) SetApplication(appid, secret string) {
+	if appid != ""{
+		opt.AppID = appid
+	}
+	if secret != "" {
+		opt.AppSecret = secret
+	}
 }
 
 func (opt *Options) SetRefreshDefault(s string, default_refresh time.Duration) {

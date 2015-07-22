@@ -142,6 +142,18 @@ func App() *cli.App {
 				{
 					Name:  "start",
 					Usage: "local server start",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "appid",
+							Value: "",
+							Usage: "h2object application id",
+						},
+						cli.StringFlag{
+							Name: "secret",
+							Value: "",
+							Usage: "h2object application secret",
+						},
+					},
 					Action: func(ctx *cli.Context) {
 						httpStartCommand(ctx)	
 					},
@@ -299,6 +311,164 @@ func App() *cli.App {
 					},
 					Action: func(ctx *cli.Context) {
 						themePushCommand(ctx)	
+					},
+				},
+			},
+		},
+		{
+			Name:  "container",
+			Usage: "container commands @ h2object.io",
+			Subcommands: []cli.Command{
+				{
+					Name:  "get",
+					Usage: "get containers @ remote with option argments: [container-id] ...",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerGetCommand(ctx)	
+					},
+				},
+				{
+					Name:  "create",
+					Usage: "create container @ remote with required argment: [invitation]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerCreateCommand(ctx)	
+					},
+				},
+				{
+					Name:  "start",
+					Usage: "start container @ remote with required argment: [container-id]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerStartCommand(ctx)	
+					},
+				},
+				{
+					Name:  "stop",
+					Usage: "stop container @ remote with required argment: [container-id]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerStopCommand(ctx)	
+					},
+				},
+				{
+					Name:  "restart",
+					Usage: "restart container @ remote with required argment: [container-id]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerRestartCommand(ctx)	
+					},
+				},
+				{
+					Name:  "pause",
+					Usage: "pause container @ remote with required argment: [container-id]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerPauseCommand(ctx)	
+					},
+				},
+				{
+					Name:  "unpause",
+					Usage: "unpause container @ remote with required argment: [container-id]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerUnpauseCommand(ctx)	
+					},
+				},
+				{
+					Name:  "domain",
+					Usage: "set container domain @ remote  with required argments: [container-id] [custom-domain]",
+					Flags: []cli.Flag {
+						cli.StringFlag{
+							Name: "Host, H",
+							Value: "api.h2object.io",
+							Usage: "remote server host",
+						},
+						cli.IntFlag{
+							Name: "Port, P",
+							Value: 80,
+							Usage: "remote server port",
+						},
+					},
+					Action: func(ctx *cli.Context) {
+						containerDomainCommand(ctx)	
 					},
 				},
 			},

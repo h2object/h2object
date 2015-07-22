@@ -86,6 +86,7 @@ func (ctx *context) load() {
 	secret_dft, _ := util.AlphaStringRange(32, 36)
 	appid := conf.StringDefault("appid", appid_dft)
 	secret := conf.StringDefault("secret", secret_dft)
+
 	ctx.host = conf.StringDefault("host", ctx.app.Options.HTTPAddress)
 	ctx.index = conf.StringDefault("index", "")
 	ctx.signature = util.SignString(secret, appid)
