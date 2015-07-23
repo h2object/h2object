@@ -18,19 +18,21 @@ type OUTContainer struct{
 	Status string `json:"status"`
 	Storage string `json:"storage"`
 	Version string `json:"version"`
+	ExpireAt string `json:"expire_at"`
 }
 
 func printOUTContainer(out io.Writer, container OUTContainer) {
-	fmt.Fprintf(out, "------------------------\t\n")
-	fmt.Fprintf(out, "Container ID:\t%s\n", container.ID)
-	fmt.Fprintf(out, "Application Version:\t%s\n", container.Version)
+	fmt.Fprintf(out, "------------------------\t--------------------------\n")
+	fmt.Fprintf(out, "H2OBJECT  Version:\t%s\n", container.Version)
+	fmt.Fprintf(out, "Container ID:\t%s\n", container.ID)	
 	fmt.Fprintf(out, "Container System Domain:\t%s\n", container.SystemDomain)
 	fmt.Fprintf(out, "Container Custom Domain:\t%s\n", container.CustomDomain)
+	fmt.Fprintf(out, "Container Port:\t%d\n", container.Port)
 	fmt.Fprintf(out, "Container Status:\t%s\n", container.Status)
 	fmt.Fprintf(out, "Container AppID:\t%s\n", container.AppID)
 	fmt.Fprintf(out, "Container AppSecret:\t%s\n", container.AppSecret)
 	fmt.Fprintf(out, "Container Storage Max:\t%s\n", container.Storage)
-	
+	fmt.Fprintf(out, "Container Expire Date:\t%s\n", container.ExpireAt)
 	fmt.Fprintf(out, "\n")
 }
 
