@@ -16,7 +16,7 @@ import (
 
 type Theme struct{
 	ID 			int64 	`db:"id" json:"id"`
-	Stat    	int64   `db:"stat" json:"stat"`  
+	Status    	int64   `db:"status" json:"status"`  
 	Catagory 	int64 	`db:"catagory" json:"catagory"`
 	Account 	int64	`db:"account" json:"account"`
 	Provider 	string 	`db:"provider" json:"provider"`
@@ -33,11 +33,11 @@ type Theme struct{
 
 func catagory_print(catagory int64) string {
 	switch catagory {
-	case 0:
-		return fmt.Sprintf("free")	
 	case 1:
-		return fmt.Sprintf("member")
+		return fmt.Sprintf("free")	
 	case 2:
+		return fmt.Sprintf("member")
+	case 3:
 		return fmt.Sprintf("buy")
 	}
 	return fmt.Sprintf("%d", catagory)
@@ -45,10 +45,14 @@ func catagory_print(catagory int64) string {
 
 func status_print(stat int64) string {
 	switch stat {
-	case 0:
-		return fmt.Sprintf("private")
 	case 1:
+		return fmt.Sprintf("private")
+	case 2:
 		return fmt.Sprintf("public")
+	case 3:
+		return fmt.Sprintf("disable")
+	case 4:
+		return fmt.Sprintf("deleted")
 	}
 	return fmt.Sprintf("%d", stat)
 }
@@ -92,7 +96,7 @@ func themeSearchCommand(ctx *cli.Context) {
 	fmt.Fprintf(w, "provider/name:version\tstatus\tcatagory\tdownloads\tdescription\n")
 	fmt.Fprintf(w, "---------------------\t-------\t--------\t---------\t-----------\n")
 	for _, theme := range result.Themes {
-		fmt.Fprintf(w, "%s/%s:%s\t%s\t%s\t%d\t%s\n", theme.Provider, theme.Name, theme.Version, status_print(theme.Stat),catagory_print(theme.Catagory), theme.Apps, theme.Description)
+		fmt.Fprintf(w, "%s/%s:%s\t%s\t%s\t%d\t%s\n", theme.Provider, theme.Name, theme.Version, status_print(theme.Status),catagory_print(theme.Catagory), theme.Apps, theme.Description)
 	}
 	fmt.Fprintf(w, "\n")
 	fmt.Fprintf(w, "The repository has %d themes totally.", result.Total)
@@ -162,12 +166,12 @@ func themePushCommand(ctx *cli.Context) {
 
 	pkg.Version = h2oconf.StringDefault("version", "1.0.0")
 	public := h2oconf.BoolDefault("public", false)
-	pkg.Stat = 0
+	pkg.Status = 1
 	if public == true {
-		pkg.Stat = 1
+		pkg.Status = 2
 	}
 	pkg.Price = h2oconf.FloatDefault("price", 0.0)
-	pkg.Catagory = int64(h2oconf.IntDefault("catagory", 0))
+	pkg.Catagory = int64(h2oconf.IntDefault("catagory", 1))
 
 	var tarOpt archive.TarOptions
 	tarOpt.ExcludePatterns = append(tarOpt.ExcludePatterns, ".h2object")

@@ -16,6 +16,8 @@ import (
 type Application struct{
 	sync.RWMutex
 	log.Logger
+	//version
+	version 	string
 
 	// option & config
 	Options		 *Options
@@ -192,6 +194,10 @@ func (app *Application) Refresh() {
 	app.templates.Refresh()
 	get_context().load()
 }
+
+func (app *Application) Version(version string) {
+	app.version = version
+}	
 
 func (app *Application) Exit() {
 	if app.httpListener != nil {

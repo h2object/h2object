@@ -21,6 +21,18 @@ type OUTContainer struct{
 	ExpireAt string `json:"expire_at"`
 }
 
+func highlight(status string) string {
+	switch status {
+	case "running":
+		return fmt.Sprintf("[\033[32m%s\033[0m]", status)
+	case "stopped":
+		return fmt.Sprintf("[\033[31m%s\033[0m]", status)
+	default:
+		return fmt.Sprintf("[\033[33m%s\033[0m]", status)
+	}
+	return fmt.Sprintf("[\033[33m%s\033[0m]", status)
+}
+
 func printOUTContainer(out io.Writer, container OUTContainer) {
 	fmt.Fprintf(out, "------------------------\t--------------------------\n")
 	fmt.Fprintf(out, "H2OBJECT  Version:\t%s\n", container.Version)
@@ -28,7 +40,7 @@ func printOUTContainer(out io.Writer, container OUTContainer) {
 	fmt.Fprintf(out, "Container System Domain:\t%s\n", container.SystemDomain)
 	fmt.Fprintf(out, "Container Custom Domain:\t%s\n", container.CustomDomain)
 	fmt.Fprintf(out, "Container Port:\t%d\n", container.Port)
-	fmt.Fprintf(out, "Container Status:\t%s\n", container.Status)
+	fmt.Fprintf(out, "Container Status:\t%s\n", highlight(container.Status))
 	fmt.Fprintf(out, "Container AppID:\t%s\n", container.AppID)
 	fmt.Fprintf(out, "Container AppSecret:\t%s\n", container.AppSecret)
 	fmt.Fprintf(out, "Container Storage Max:\t%s\n", container.Storage)
@@ -64,9 +76,9 @@ func containerGetCommand(ctx *cli.Context) {
 
 	w := tabwriter.NewWriter(stdout, 10, 0, 2, ' ', 0)
 
-	fmt.Fprintf(w, "Container ID\tStatus\tSystem Domain\tCustom Domain\tPort\tApplication ID\tApplciation Secret\t\n")
+	fmt.Fprintf(w, "Container ID\tSystem Domain\tCustom Domain\tPort\tStatus\tApplication ID\tApplciation Secret\t\n")
 	for _, c := range containers {
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%d\t%s\t%s\n", c.ID, c.Status, c.SystemDomain, c.CustomDomain, c.Port, c.AppID, c.AppSecret)
+		fmt.Fprintf(w, "%s\t%s\t%s\t%d\t%s\t%s\t%s\n", c.ID, c.SystemDomain, c.CustomDomain, c.Port, highlight(c.Status), c.AppID, c.AppSecret)
 	}
 	fmt.Fprintf(w, "\n")
 }

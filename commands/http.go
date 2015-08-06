@@ -78,7 +78,7 @@ func httpStartCommand(ctx *cli.Context) {
 		fmt.Println("[h2object] init failed:", err)
 		os.Exit(1)
 	}
-
+	application.Version(version)
 	start(application, daemon)	
 }
 

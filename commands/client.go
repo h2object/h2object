@@ -144,7 +144,7 @@ type Package struct{
 	Provider string
 	Name string
 	Version string
-	Stat int64
+	Status int64
 	Catagory int64
 	Description string
 	Price float64
@@ -170,7 +170,7 @@ func (cli *Client) ThemePush(token string, pkg *Package) error {
 	if err := wr.WriteField("description", pkg.Description); err != nil {
 		return err
 	}
-	if err := wr.WriteField("stat", fmt.Sprintf("%d", pkg.Stat)); err != nil {
+	if err := wr.WriteField("status", fmt.Sprintf("%d", pkg.Status)); err != nil {
 		return err
 	}
 	if err := wr.WriteField("price", fmt.Sprintf("%f", pkg.Price)); err != nil {
