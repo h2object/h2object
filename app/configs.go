@@ -2,7 +2,6 @@ package app
 
 import (
 	"os"
-	"log"
 	"sync"
 	"time"
 	"strings"
