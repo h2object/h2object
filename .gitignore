@@ -1,3 +1,4 @@
 h2object
 .tmp
-smtp/
+smtp/smtp_test.go
+smtp/testdata

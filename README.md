@@ -66,6 +66,7 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 	
  * golang.org/x/net
  * golang.org/x/text
+ * golang.org/x/image
 
 请在 GOPATH 目录下创建相应目录:
 
