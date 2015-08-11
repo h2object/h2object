@@ -8,6 +8,8 @@ H2OBJECT
 H2OBJECT 同 hexo, hugo 一样是一个通过 markdown 文件快速创建内容型站点的工具。不同的是, 
 H2OBJECT 参考了 Docker Pull/Push 的方式实现快速本地到线上站点的一键发布。
 
+![deploy.png](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
+
 同时, 用户可以申请[h2object.io](http://h2object.io)平台提供的仅运行h2obect应用的docker容器运行线上站点.
 
 ## 快速开始
@@ -40,7 +42,7 @@ H2OBJECT 参考了 Docker Pull/Push 的方式实现快速本地到线上站点�
 
 [取经求助](http://tangseng99.com)
 
-TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是得提前做些准备工作:
+虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是得提前做些准备工作:
 
 由于项目中使用了以下两个国内绝对不能直接go get 的依赖包。
 	
@@ -83,7 +85,7 @@ $: h2object  -w=/path/to/workdir theme pull [provider/name:version]
 将个人站点主题分享给其他用户
 
 ````
-$: h2object  -w=/path/to/workdir theme pull [provider/name:version]
+$: h2object  -w=/path/to/workdir theme push [provider/name:version]
 ````
 
 ### 容器申请
@@ -124,7 +126,7 @@ $: h2object -w=/path/to/workdir deploy push
 
 ### 加入QQ群讨论(159823022)
 
-### 使用指南
+### 开发指南
 
 -	[基本概念](https://github.com/h2object/h2object/blob/master/doc/chinese/basic.md)
 -	[系统配置](https://github.com/h2object/h2object/blob/master/doc/chinese/configure.md)
