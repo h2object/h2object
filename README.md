@@ -5,48 +5,28 @@ H2OBJECT
 
 ## H2OBJECT 是什么?
 
-**又一个Markdown建站工具, 但不只是工具!**
+H2OBJECT 同 hexo, hugo 一样是一个通过 markdown 文件快速创建内容型站点的工具。不同的是, 
+H2OBJECT 参考了 Docker Pull/Push 的方式实现快速本地到线上站点的一键发布。
 
-H2OBJECT主要通过:
-
- * **markdown**文件提供页面内容
-
- * **template**文件提供页面风格
-	
-快速生成网页服务。
-
-同时, 考虑到其它类似项目(Hugo)等, 在站点发布上的繁琐步骤, H2OBJECT 参考了 Docker 的 PUSH/PULL 机制,
-
-可以通过 Deploy 命令进行, 快速的 **本地** 与 **远程** 的 PUSH/PULL 操作实现一键发布。
-
-现在, 如果你要搭建一个内容型的站点, 从开始到发布通过H2OBJECT只需要几个命令就可以完成。
-
-### 设计原则
-
--	一键安装、一键发布
--	二维码分享文章
--	本地图片处理
--	全文检索支持, 不需要引入第三方插件进行页面的检索
--	云存储支持, 实现静态资源的自动转储云端
--	自定义主题发布、分享, 同样一键操作
+同时, 用户可以申请 [h2object.io](http://h2object.io)平台提供的仅运行h2obect应用的docker容器.
 
 ## 快速开始
 
-### 程序下载
+### 二进制安装
 
 如果你无法直接源码安装或者不想被GFW扰乱心绪, 就直接下载可执行程序吧:
 
 -	mac osx
 
-	[h2object-darwin-amd64.tar.gz](http://dl.h2object.io/h2object/macosx/1.0.1.tar.gz)
+	[h2object-darwin-amd64.tar.gz](http://dl.h2object.io/h2object/macosx/1.0.3.tar.gz)
 
 -	linux
 
-	[h2object-linux-amd64.tar.gz](http://dl.h2object.io/h2object/linux/1.0.1.tar.gz)
+	[h2object-linux-amd64.tar.gz](http://dl.h2object.io/h2object/linux/1.0.3.tar.gz)
 
 -	windows
 
-	[h2object-windows-amd64.tar.gz](http://dl.h2object.io/h2object/windows/1.0.1.tar.gz)
+	[h2object-windows-amd64.tar.gz](http://dl.h2object.io/h2object/windows/1.0.3.tar.gz)
 
 解压安装,将 h2object 放入系统执行路径中。
 
@@ -76,42 +56,43 @@ TMD!!! 虽然已经竭尽全力减少对墙外包的依赖, 国内安装还是�
 	git clone https://github.com/golang/text.git
 	git clone https://github.com/golang/image.git
 
-### 离线指南
-
-安装完成后, 可以直接下载 指南主题 到本地目录, 快速开始一个本地的 h2object 指南站点.
-````
-	$: h2object -w=/path/to/work theme pull h2object/tutorial:1.0.0
-	$: h2object -w=/path/to/work http start
-````
-
-### 在线指南
-
-[tutorial.h2object.io](http://tutorial.h2object.io)
-
-![tutorial](http://tutorial.h2object.io?qrcode=256)
-
-### 博客站点
-
-通过 h2object 快速创建博客站点:
+### 本地运行
 
 ````
-	$: h2object -w=/path/to/blog theme pull h2object/blog:1.0.0
-	$: h2object -w=/path/to/blog http start
+$: h2object -w=/path/to/workdir http start
 ````
-更多主题查询:
+
+### 站点主题
+
+#### 主题查询
 
 ````
-	$: h2object theme search
+$: h2object theme search
 ````
-等待您来发布更多主题。
 
+#### 主题下载
 
-### 一键发布
+````
+$: h2object  -w=/path/to/workdir theme pull [provider/name:version]
+````
 
-![deploy command](https://github.com/h2object/h2object/blob/master/doc/img/deploy.png)
+### 容器申请
 
-在本地[deploy]配置项设置好, 远端h2object应用的相关参数即可以一键进行发布。具体配置包括：
+* 创建容器
 
+````
+$: h2object -w=/path/to/workdir container create [邀请码]
+````
+
+* 运行容器
+
+````
+$: h2object -w=/path/to/workdir container start [container id]
+````
+
+### 站点发布
+
+将容器提供的appid,secret,host,port配置到本地发布站点的[deploy]配置项中
 ````
 [deploy]
 # 远端部署服务 域名 或 地址
@@ -123,9 +104,11 @@ appid=
 # 远端应用密钥
 secret= 
 ````
-### 二维码分享
+再通过以下命令一键发布站点
 
-所有 h2object 服务提供的资源URI, 均可以通过 url 参数<kbd>qrcode=256</kbd>, 设置好相应的二维码像素值。即可产生二维码图片。
+````
+$: h2object -w=/path/to/workdir deploy push
+````
 
 ### 加入QQ群讨论(159823022)
 
