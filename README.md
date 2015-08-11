@@ -8,7 +8,7 @@ H2OBJECT
 H2OBJECT 同 hexo, hugo 一样是一个通过 markdown 文件快速创建内容型站点的工具。不同的是, 
 H2OBJECT 参考了 Docker Pull/Push 的方式实现快速本地到线上站点的一键发布。
 
-同时, 用户可以申请 [h2object.io](http://h2object.io)平台提供的仅运行h2obect应用的docker容器.
+同时, 用户可以申请[h2object.io](http://h2object.io)平台提供的仅运行h2obect应用的docker容器运行线上站点.
 
 ## 快速开始
 
@@ -72,6 +72,16 @@ $: h2object theme search
 
 #### 主题下载
 
+下载他人分享的站点主题
+
+````
+$: h2object  -w=/path/to/workdir theme pull [provider/name:version]
+````
+
+#### 主题发布
+
+将个人站点主题分享给其他用户
+
 ````
 $: h2object  -w=/path/to/workdir theme pull [provider/name:version]
 ````
@@ -79,6 +89,8 @@ $: h2object  -w=/path/to/workdir theme pull [provider/name:version]
 ### 容器申请
 
 * 创建容器
+
+容器创建前必须到[h2object.io](http://h2object.io)平台申请容器邀请码。
 
 ````
 $: h2object -w=/path/to/workdir container create [邀请码]
